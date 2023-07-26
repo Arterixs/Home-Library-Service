@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { User } from 'src/user/user.types';
+import { User } from 'src/user/user.validation';
 
 @Module({})
 export class DatabaseModule {
@@ -15,5 +15,9 @@ export class DatabaseModule {
 
   getUser(id: string) {
     return this.users.get(id);
+  }
+
+  checkUser(id: string) {
+    return this.users.has(id);
   }
 }

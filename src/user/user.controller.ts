@@ -3,6 +3,8 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Get,
+  Param,
+  ParseUUIDPipe,
   Post,
   UseInterceptors,
   UsePipes,
@@ -11,10 +13,6 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto, User } from './user.validation';
 
-interface userData {
-  data: string;
-}
-
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
 export class UserController {
@@ -22,7 +20,12 @@ export class UserController {
 
   @Get()
   getUsers(): User[] {
-    return Array.from(this.userService.getUsers());
+    return this.userService.getUsers();
+  }
+
+  @Get(':id')
+  getUser(@Param('id', ParseUUIDPipe) id: string) {
+    return this.userService.getUserById(id);
   }
 
   @UsePipes(new ValidationPipe())
