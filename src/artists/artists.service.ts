@@ -23,8 +23,8 @@ export class ArtistsService {
   }
 
   checkArtist(id: string) {
-    const isAlbum = this.dataBase.checkArtist(id);
-    if (!isAlbum) {
+    const isArtist = this.dataBase.checkArtist(id);
+    if (!isArtist) {
       throw new HttpException('Artist is not exist', HttpStatus.NOT_FOUND);
     }
   }
