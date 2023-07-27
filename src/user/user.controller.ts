@@ -3,9 +3,11 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   HttpCode,
   HttpStatus,
+  NotFoundException,
   Param,
   ParseUUIDPipe,
   Post,
@@ -29,7 +31,13 @@ export class UserController {
 
   @Get(':id')
   getUser(@Param('id', ParseUUIDPipe) id: string) {
-    return this.userService.getUserById(id);
+    try {
+      return this.userService.getUserById(id);
+    } catch (err) {
+      if (err.status === HttpStatus.NOT_FOUND) {
+        throw new NotFoundException(err.message);
+      }
+    }
   }
 
   @UsePipes(new ValidationPipe())
@@ -44,12 +52,27 @@ export class UserController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    return this.userService.changeUserById(id, updateUserDto);
+    try {
+      return this.userService.changeUserById(id, updateUserDto);
+    } catch (err) {
+      if (err.status === HttpStatus.FORBIDDEN) {
+        throw new ForbiddenException(err.message);
+      }
+      if (err.status === HttpStatus.NOT_FOUND) {
+        throw new NotFoundException(err.message);
+      }
+    }
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   removeUser(@Param('id', ParseUUIDPipe) id: string) {
-    return this.userService.removeUser(id);
+    try {
+      return this.userService.removeUser(id);
+    } catch (err) {
+      if (err.status === HttpStatus.NOT_FOUND) {
+        throw new NotFoundException(err.message);
+      }
+    }
   }
 }

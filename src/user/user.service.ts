@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { DatabaseModule } from 'src/database/database.module';
 import { CreateUserDto, UpdateUserDto, User } from './user.validation';
 import { v4 as uuidv4 } from 'uuid';
+import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly dataBase: DatabaseModule) {}
+  constructor(private readonly dataBase: DatabaseService) {}
 
   getUsers(): User[] {
     return this.dataBase.getUsers();
