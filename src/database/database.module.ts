@@ -3,6 +3,7 @@ import { UsersDBService } from '../user/users-db.service';
 import { AlbumsDBService } from '../albums/albums-db.service';
 import { ArtistsDBService } from '../artists/artists-db.service';
 import { TracksDBService } from '../tracks/tracks-db.service';
+import { FavoritesDBService } from 'src/favorites/favorites-db.service';
 
 @Global()
 @Module({
@@ -11,7 +12,14 @@ import { TracksDBService } from '../tracks/tracks-db.service';
     AlbumsDBService,
     ArtistsDBService,
     TracksDBService,
+    FavoritesDBService,
   ],
-  exports: [UsersDBService, AlbumsDBService, ArtistsDBService, TracksDBService],
+  exports: [
+    UsersDBService,
+    AlbumsDBService,
+    ArtistsDBService,
+    TracksDBService,
+    FavoritesDBService,
+  ],
 })
 export class DatabaseModule {}

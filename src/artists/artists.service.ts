@@ -4,6 +4,7 @@ import { Artist, CreateArtistDto, UpdateArtistDto } from './artists.validation';
 import { v4 as uuidv4 } from 'uuid';
 import { AlbumsDBService } from 'src/albums/albums-db.service';
 import { TracksDBService } from 'src/tracks/tracks-db.service';
+import { FavoritesDBService } from 'src/favorites/favorites-db.service';
 
 @Injectable()
 export class ArtistsService {
@@ -11,6 +12,7 @@ export class ArtistsService {
     private readonly dataBase: ArtistsDBService,
     private readonly dataBaseAlbum: AlbumsDBService,
     private readonly dataBaseTrack: TracksDBService,
+    private readonly dataBaseFavs: FavoritesDBService,
   ) {}
 
   getArtists(): Artist[] {
@@ -68,6 +70,7 @@ export class ArtistsService {
     this.deleteArtist(id);
     this.deleteArtistByIdAlbumDB(id);
     this.deleteArtistByIdTrackDB(id);
+    this.deleteArtistByIdFavsDB(id);
   }
 
   deleteArtistByIdAlbumDB(id: string) {
@@ -76,5 +79,9 @@ export class ArtistsService {
 
   deleteArtistByIdTrackDB(id: string) {
     this.dataBaseTrack.deleteArtistById(id);
+  }
+
+  deleteArtistByIdFavsDB(id: string) {
+    this.dataBaseFavs.deleteArtist(id);
   }
 }

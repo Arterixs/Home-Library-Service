@@ -2,10 +2,14 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateTrackDto, Track, UpdateTrackDto } from './tracks.validation';
 import { TracksDBService } from 'src/tracks/tracks-db.service';
 import { v4 as uuidv4 } from 'uuid';
+import { FavoritesDBService } from 'src/favorites/favorites-db.service';
 
 @Injectable()
 export class TracksService {
-  constructor(private readonly dataBase: TracksDBService) {}
+  constructor(
+    private readonly dataBase: TracksDBService,
+    private readonly dataBaseFavorites: FavoritesDBService,
+  ) {}
 
   getTracks(): Track[] {
     return this.dataBase.getAll();
@@ -57,8 +61,13 @@ export class TracksService {
     this.dataBase.delete(id);
   }
 
+  deleteTrackFavs(id: string) {
+    this.dataBaseFavorites.deleteTrack(id);
+  }
+
   removeTrack(id: string) {
     this.checkTrack(id);
     this.deleteTrack(id);
+    this.deleteTrackFavs(id);
   }
 }

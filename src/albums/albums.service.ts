@@ -3,12 +3,14 @@ import { AlbumsDBService } from 'src/albums/albums-db.service';
 import { Album, CreateAlbumDto, UpdateAlbumDto } from './albums.validation';
 import { v4 as uuidv4 } from 'uuid';
 import { TracksDBService } from 'src/tracks/tracks-db.service';
+import { FavoritesDBService } from 'src/favorites/favorites-db.service';
 
 @Injectable()
 export class AlbumsService {
   constructor(
     private readonly dataBase: AlbumsDBService,
     private readonly dataBaseTrack: TracksDBService,
+    private readonly dataBaseFavs: FavoritesDBService,
   ) {}
 
   getAlbums(): Album[] {
@@ -65,9 +67,14 @@ export class AlbumsService {
     this.dataBaseTrack.deleteAlbumById(id);
   }
 
+  deleteAlbumFavs(id: string) {
+    this.dataBaseFavs.deleteAlbum(id);
+  }
+
   removeAlbum(id: string) {
     this.checkAlbumId(id);
     this.deleteAlbum(id);
     this.deleteAlbumByIdTrackDB(id);
+    this.deleteAlbumFavs(id);
   }
 }
