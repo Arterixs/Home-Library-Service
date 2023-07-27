@@ -6,12 +6,13 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
+  Put,
   UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto, User } from './user.validation';
+import { CreateUserDto, UpdateUserDto, User } from './user.validation';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
@@ -31,6 +32,15 @@ export class UserController {
   @UsePipes(new ValidationPipe())
   @Post()
   createUser(@Body() user: CreateUserDto): User {
-    return this.userService.setUsers(user);
+    return this.userService.setUser(user);
+  }
+
+  @UsePipes(new ValidationPipe())
+  @Put(':id')
+  changeUser(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.userService.changeUserById(id, updateUserDto);
   }
 }

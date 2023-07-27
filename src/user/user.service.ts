@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { DatabaseModule } from 'src/database/database.module';
-import { CreateUserDto, User } from './user.validation';
+import { CreateUserDto, UpdateUserDto, User } from './user.validation';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -11,7 +11,7 @@ export class UserService {
     return this.dataBase.getUsers();
   }
 
-  setUsers(user: CreateUserDto) {
+  setUser(user: CreateUserDto) {
     const fullUser = this.createUser(user);
     this.dataBase.setUser(new User(fullUser));
     return this.getUserById(fullUser.id);
@@ -26,6 +26,33 @@ export class UserService {
     const isUser = this.dataBase.checkUser(id);
     if (!isUser) {
       throw new HttpException('User is not exist', HttpStatus.NOT_FOUND);
+    }
+  }
+
+  changeUserById(id: string, data: UpdateUserDto) {
+    const user = this.getUserById(id);
+    this.checkPasswordUser(user.password, data.oldPassword);
+    const updateUser = this.changeUser(user, data.newPassword);
+    this.dataBase.setUser(new User(updateUser));
+    return this.getUserById(updateUser.id);
+  }
+
+  changeUser(user: User, newPassword: string) {
+    return {
+      ...user,
+      password: newPassword,
+      updatedAt: Date.now(),
+      version: user.version + 1,
+    };
+  }
+
+  checkPasswordUser(currentPassword: string, oldPassword: string) {
+    const isEqualPassword = currentPassword === oldPassword;
+    if (!isEqualPassword) {
+      throw new HttpException(
+        'Old password is not correct',
+        HttpStatus.FORBIDDEN,
+      );
     }
   }
 
