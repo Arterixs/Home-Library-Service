@@ -53,12 +53,12 @@ export class TracksService {
     return this.takeTrack(id);
   }
 
-  deleteArtist(id: string) {
+  deleteTrack(id: string) {
     this.dataBase.delete(id);
   }
 
   removeTrack(id: string) {
     this.checkTrack(id);
-    this.deleteArtist(id);
+    this.deleteTrack(id);
   }
 }

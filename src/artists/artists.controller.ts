@@ -55,7 +55,7 @@ export class ArtistsController {
   @HttpCode(HttpStatus.NO_CONTENT)
   delete(@Param('id', ParseUUIDPipe) id: string) {
     try {
-      return this.artistsService.removeAlbum(id);
+      return this.artistsService.removeArtist(id);
     } catch (err) {
       if (err.status === HttpStatus.NOT_FOUND) {
         throw new NotFoundException(err.message);

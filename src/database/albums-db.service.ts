@@ -24,4 +24,12 @@ export class AlbumsDBService {
   checkAlbum(id: string) {
     return this.albums.has(id);
   }
+
+  deleteArtistById(artistId: string) {
+    this.albums.forEach((album) => {
+      if (album.artistId === artistId) {
+        album.artistId = null;
+      }
+    });
+  }
 }

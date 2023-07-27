@@ -2,10 +2,14 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { AlbumsDBService } from 'src/database/albums-db.service';
 import { Album, CreateAlbumDto, UpdateAlbumDto } from './albums.validation';
 import { v4 as uuidv4 } from 'uuid';
+import { TracksDBService } from 'src/database/tracks-db.service';
 
 @Injectable()
 export class AlbumsService {
-  constructor(private readonly dataBase: AlbumsDBService) {}
+  constructor(
+    private readonly dataBase: AlbumsDBService,
+    private readonly dataBaseTrack: TracksDBService,
+  ) {}
 
   getAlbums(): Album[] {
     return this.dataBase.getAlbums();
@@ -57,8 +61,13 @@ export class AlbumsService {
     this.dataBase.removeAlbum(id);
   }
 
+  deleteAlbumByIdTrackDB(id: string) {
+    this.dataBaseTrack.deleteAlbumById(id);
+  }
+
   removeAlbum(id: string) {
     this.checkAlbumId(id);
     this.deleteAlbum(id);
+    this.deleteAlbumByIdTrackDB(id);
   }
 }

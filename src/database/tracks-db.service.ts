@@ -24,4 +24,20 @@ export class TracksDBService {
   checkTracks(id: string) {
     return this.tracks.has(id);
   }
+
+  deleteAlbumById(albumId: string) {
+    this.tracks.forEach((track) => {
+      if (track.albumId === albumId) {
+        track.albumId = null;
+      }
+    });
+  }
+
+  deleteArtistById(artistId: string) {
+    this.tracks.forEach((track) => {
+      if (track.artistId === artistId) {
+        track.artistId = null;
+      }
+    });
+  }
 }
