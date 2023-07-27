@@ -22,6 +22,11 @@ export class UserService {
     return this.dataBase.getUser(id);
   }
 
+  removeUser(id: string) {
+    this.checkUserById(id);
+    this.dataBase.removeUser(id);
+  }
+
   checkUserById(id: string) {
     const isUser = this.dataBase.checkUser(id);
     if (!isUser) {

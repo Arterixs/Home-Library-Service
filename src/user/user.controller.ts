@@ -2,7 +2,10 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
+  Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   ParseUUIDPipe,
   Post,
@@ -42,5 +45,11 @@ export class UserController {
     @Body() updateUserDto: UpdateUserDto,
   ) {
     return this.userService.changeUserById(id, updateUserDto);
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  removeUser(@Param('id', ParseUUIDPipe) id: string) {
+    return this.userService.removeUser(id);
   }
 }

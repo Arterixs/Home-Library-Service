@@ -9,6 +9,10 @@ export class DatabaseModule {
     return Array.from(this.users.values());
   }
 
+  removeUser(id: string) {
+    this.users.delete(id);
+  }
+
   setUser(user: User) {
     this.users.set(user.id, user);
   }
