@@ -1,10 +1,10 @@
 import { Global, Module } from '@nestjs/common';
-import { User } from 'src/user/user.validation';
 import { DatabaseService } from './database.service';
+import { AlbumsDBService } from './albums-db.service';
 
 @Global()
 @Module({
-  providers: [DatabaseService],
-  exports: [DatabaseService],
+  providers: [DatabaseService, AlbumsDBService],
+  exports: [DatabaseService, AlbumsDBService],
 })
 export class DatabaseModule {}
