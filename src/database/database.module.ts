@@ -1,22 +1,17 @@
 import { Global, Module } from '@nestjs/common';
-import { DatabaseService } from './database.service';
-import { AlbumsDBService } from './albums-db.service';
-import { ArtistsDBService } from './artists-db.service';
-import { TracksDBService } from './tracks-db.service';
+import { UsersDBService } from '../user/users-db.service';
+import { AlbumsDBService } from '../albums/albums-db.service';
+import { ArtistsDBService } from '../artists/artists-db.service';
+import { TracksDBService } from '../tracks/tracks-db.service';
 
 @Global()
 @Module({
   providers: [
-    DatabaseService,
+    UsersDBService,
     AlbumsDBService,
     ArtistsDBService,
     TracksDBService,
   ],
-  exports: [
-    DatabaseService,
-    AlbumsDBService,
-    ArtistsDBService,
-    TracksDBService,
-  ],
+  exports: [UsersDBService, AlbumsDBService, ArtistsDBService, TracksDBService],
 })
 export class DatabaseModule {}

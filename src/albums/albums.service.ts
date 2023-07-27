@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { AlbumsDBService } from 'src/database/albums-db.service';
+import { AlbumsDBService } from 'src/albums/albums-db.service';
 import { Album, CreateAlbumDto, UpdateAlbumDto } from './albums.validation';
 import { v4 as uuidv4 } from 'uuid';
-import { TracksDBService } from 'src/database/tracks-db.service';
+import { TracksDBService } from 'src/tracks/tracks-db.service';
 
 @Injectable()
 export class AlbumsService {

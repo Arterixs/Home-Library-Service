@@ -1,30 +1,34 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto, User } from './user.validation';
 import { v4 as uuidv4 } from 'uuid';
-import { DatabaseService } from 'src/database/database.service';
+import { UsersDBService } from 'src/user/users-db.service';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly dataBase: DatabaseService) {}
+  constructor(private readonly dataBase: UsersDBService) {}
 
   getUsers(): User[] {
-    return this.dataBase.getUsers();
+    return this.dataBase.getAll();
   }
 
   setUser(user: CreateUserDto) {
     const fullUser = this.createUser(user);
-    this.dataBase.setUser(new User(fullUser));
-    return this.getUserById(fullUser.id);
+    this.dataBase.create(new User(fullUser));
+    return this.takeUserById(fullUser.id);
+  }
+
+  takeUserById(id: string) {
+    return this.dataBase.getById(id);
   }
 
   getUserById(id: string) {
     this.checkUserById(id);
-    return this.dataBase.getUser(id);
+    return this.takeUserById(id);
   }
 
   removeUser(id: string) {
     this.checkUserById(id);
-    this.dataBase.removeUser(id);
+    this.dataBase.delete(id);
   }
 
   checkUserById(id: string) {
@@ -35,11 +39,12 @@ export class UserService {
   }
 
   changeUserById(id: string, data: UpdateUserDto) {
-    const user = this.getUserById(id);
+    this.checkUserById(id);
+    const user = this.takeUserById(id);
     this.checkPasswordUser(user.password, data.oldPassword);
     const updateUser = this.changeUser(user, data.newPassword);
-    this.dataBase.setUser(new User(updateUser));
-    return this.getUserById(updateUser.id);
+    this.dataBase.create(new User(updateUser));
+    return this.takeUserById(updateUser.id);
   }
 
   changeUser(user: User, newPassword: string) {

@@ -2,22 +2,22 @@ import { Injectable } from '@nestjs/common';
 import { User } from 'src/user/user.validation';
 
 @Injectable()
-export class DatabaseService {
+export class UsersDBService {
   private users: Map<string, User> = new Map();
 
-  getUsers() {
+  getAll() {
     return Array.from(this.users.values());
   }
 
-  removeUser(id: string) {
+  delete(id: string) {
     this.users.delete(id);
   }
 
-  setUser(user: User) {
+  create(user: User) {
     this.users.set(user.id, user);
   }
 
-  getUser(id: string) {
+  getById(id: string) {
     return this.users.get(id);
   }
 
