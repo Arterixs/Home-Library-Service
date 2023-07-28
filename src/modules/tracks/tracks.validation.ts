@@ -8,59 +8,69 @@ import {
 } from 'class-validator';
 
 export class Track {
+  @ApiProperty({ example: '3fa85f64-5717-4562-b3fc-2c963f66afa6' })
   id: string;
+
+  @ApiProperty({ example: 'Toca Toca' })
   name: string;
-  artistId?: string | null;
-  albumId?: string | null;
+
+  @ApiProperty({ example: '3fa85f64-5717-4562-b3fc-2c963f66afa6' })
+  artistId: string | null;
+
+  @ApiProperty({ example: null })
+  albumId: string | null;
+
+  @ApiProperty({ example: 160 })
   duration: number;
+
   constructor(partial: Partial<Track>) {
     Object.assign(this, partial);
   }
 }
 
 export class CreateTrackDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'Toca Toca' })
   @IsString()
   @IsNotEmpty()
   name: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: '3fa85f64-5717-4562-b3fc-2c963f66afa6' })
   @IsOptional()
   @IsUUID(4)
   @IsNotEmpty()
-  artistId?: string | null;
+  artistId: string | null;
 
-  @ApiProperty()
+  @ApiProperty({ example: null })
   @IsOptional()
   @IsUUID(4)
   @IsNotEmpty()
-  albumId?: string | null;
+  albumId: string | null;
 
-  @ApiProperty()
+  @ApiProperty({ example: 160 })
   @IsNumber()
   @IsNotEmpty()
   duration: number;
 }
 
 export class UpdateTrackDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'Toca Toca' })
   @IsString()
   @IsNotEmpty()
   name: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: '3fa85f64-5717-4562-b3fc-2c963f66afa6' })
   @IsOptional()
   @IsUUID(4)
   @IsNotEmpty()
-  artistId?: string | null;
+  artistId: string | null;
 
-  @ApiProperty()
+  @ApiProperty({ example: '3fa85f64-5717-4562-b3fc-2c963f66afa6' })
   @IsOptional()
   @IsUUID(4)
   @IsNotEmpty()
-  albumId?: string | null;
+  albumId: string | null;
 
-  @ApiProperty()
+  @ApiProperty({ example: 320 })
   @IsNumber()
   @IsNotEmpty()
   duration: number;

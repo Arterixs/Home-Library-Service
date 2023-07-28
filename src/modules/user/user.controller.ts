@@ -22,11 +22,11 @@ import { USER_PATH } from 'src/constants/const';
 import { ApiTags } from '@nestjs/swagger';
 import {
   DeleteUserDescription,
-  GetAllDescription,
   GetUserByIdDescription,
   PostUserDescription,
   PutUserDescription,
 } from 'src/swagger/user';
+import { GetAllUsersDescription } from 'src/swagger/get-all-user';
 
 @ApiTags('User')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -35,7 +35,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  @GetAllDescription()
+  @GetAllUsersDescription()
   getUsers(): User[] {
     return this.userService.getUsers();
   }

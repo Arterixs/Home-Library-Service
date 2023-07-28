@@ -7,24 +7,24 @@ import {
   ApiParam,
 } from '@nestjs/swagger';
 
-export function DeleteUserDescription() {
+export function DeleteTrackDescription() {
   return applyDecorators(
     ApiOperation({
-      summary: 'Delete user',
-      description: 'Delete user by ID',
+      summary: 'Delete track',
+      description: 'Delete track from library',
     }),
     ApiParam({
-      name: 'userId',
+      name: 'trackId',
       format: 'uuid',
     }),
     ApiNoContentResponse({
-      description: 'The user has been deleted',
+      description: 'Deleted successfully',
     }),
     ApiBadRequestResponse({
-      description: 'Bad request. userId is invalid (not uuid)',
+      description: 'Bad request. trackId is invalid (not uuid)',
     }),
     ApiNotFoundResponse({
-      description: 'User not found',
+      description: 'Track was not found.',
     }),
   );
 }

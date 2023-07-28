@@ -6,27 +6,27 @@ import {
   ApiOperation,
   ApiParam,
 } from '@nestjs/swagger';
-import { User } from 'src/modules/user/user.validation';
+import { Track } from 'src/modules/tracks/tracks.validation';
 
-export function GetUserByIdDescription() {
+export function GetTrackByIdDescription() {
   return applyDecorators(
     ApiOperation({
-      summary: 'Get user by id',
-      description: 'Get single user by id',
+      summary: 'Get single track by id',
+      description: 'Get single track by id',
     }),
     ApiParam({
-      name: 'userId',
+      name: 'trackId',
       format: 'uuid',
     }),
     ApiOkResponse({
       description: 'Successful operation.',
-      type: User,
+      type: Track,
     }),
     ApiBadRequestResponse({
-      description: 'Bad request. userId is invalid (not uuid)',
+      description: 'Bad request. trackId is invalid (not uuid)',
     }),
     ApiNotFoundResponse({
-      description: 'User not found',
+      description: 'Track was not found.',
     }),
   );
 }

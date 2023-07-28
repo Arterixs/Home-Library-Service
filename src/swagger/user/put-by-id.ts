@@ -5,6 +5,7 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiParam,
 } from '@nestjs/swagger';
 import { User } from 'src/modules/user/user.validation';
 
@@ -13,6 +14,10 @@ export function PutUserDescription() {
     ApiOperation({
       summary: 'Updates a users password by ID',
       description: 'Updates a users password by ID',
+    }),
+    ApiParam({
+      name: 'userId',
+      format: 'uuid',
     }),
     ApiOkResponse({
       description: 'The user has been updated.',

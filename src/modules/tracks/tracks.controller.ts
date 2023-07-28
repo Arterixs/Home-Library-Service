@@ -17,6 +17,13 @@ import { TracksService } from './tracks.service';
 import { CreateTrackDto, Track, UpdateTrackDto } from './tracks.validation';
 import { TRACK_PATH } from 'src/constants/const';
 import { ApiTags } from '@nestjs/swagger';
+import {
+  DeleteTrackDescription,
+  GetAllTracksDescription,
+  GetTrackByIdDescription,
+  PostTrackDescription,
+  PutTrackDescription,
+} from 'src/swagger/track';
 
 @ApiTags('Track')
 @Controller(TRACK_PATH)
@@ -24,12 +31,14 @@ export class TracksController {
   constructor(private readonly tracksService: TracksService) {}
 
   @Get()
+  @GetAllTracksDescription()
   getAll(): Track[] {
     return this.tracksService.getTracks();
   }
 
-  @Get(':id')
-  getById(@Param('id', ParseUUIDPipe) id: string) {
+  @Get(':trackId')
+  @GetTrackByIdDescription()
+  getById(@Param('trackId', ParseUUIDPipe) id: string) {
     try {
       return this.tracksService.getTrackBuId(id);
     } catch (err) {
@@ -40,9 +49,10 @@ export class TracksController {
   }
 
   @UsePipes(new ValidationPipe())
-  @Put(':id')
+  @Put(':trackId')
+  @PutTrackDescription()
   change(
-    @Param('id', ParseUUIDPipe) id: string,
+    @Param('trackId', ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateTrackDto,
   ) {
     try {
@@ -54,9 +64,10 @@ export class TracksController {
     }
   }
 
-  @Delete(':id')
+  @Delete(':trackId')
+  @DeleteTrackDescription()
   @HttpCode(HttpStatus.NO_CONTENT)
-  delete(@Param('id', ParseUUIDPipe) id: string) {
+  delete(@Param('trackId', ParseUUIDPipe) id: string) {
     try {
       return this.tracksService.removeTrack(id);
     } catch (err) {
@@ -68,6 +79,7 @@ export class TracksController {
 
   @UsePipes(new ValidationPipe())
   @Post()
+  @PostTrackDescription()
   create(@Body() album: CreateTrackDto): Track {
     return this.tracksService.setTrack(album);
   }

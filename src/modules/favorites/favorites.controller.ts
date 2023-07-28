@@ -19,19 +19,30 @@ import {
   TRACK_PATH,
 } from 'src/constants/const';
 import { ApiTags } from '@nestjs/swagger';
+import {
+  DeleteAlbumFavsDescription,
+  DeleteArtistFavsDescription,
+  DeleteTrackFavsDescription,
+  GetAllFavsDescription,
+  PostAlbumFavsDescription,
+  PostArtistFavsDescription,
+  PostTrackFavsDescription,
+} from 'src/swagger/favorites';
 
-@ApiTags('Favorites')
+@ApiTags('Favs')
 @Controller(FAVS_PATH)
 export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}
 
   @Get()
+  @GetAllFavsDescription()
   getFavs(): FavoritesResponse {
     return this.favoritesService.getFavs();
   }
 
-  @Post(`${TRACK_PATH}/:id`)
-  addTrack(@Param('id', ParseUUIDPipe) id: string) {
+  @Post(`${TRACK_PATH}/:trackId`)
+  @PostTrackFavsDescription()
+  addTrack(@Param('trackId', ParseUUIDPipe) id: string) {
     try {
       this.favoritesService.addTrack(id);
     } catch (err) {
@@ -41,9 +52,10 @@ export class FavoritesController {
     }
   }
 
-  @Delete(`${TRACK_PATH}/:id`)
+  @Delete(`${TRACK_PATH}/:trackId`)
+  @DeleteTrackFavsDescription()
   @HttpCode(HttpStatus.NO_CONTENT)
-  deleteTrack(@Param('id', ParseUUIDPipe) id: string) {
+  deleteTrack(@Param('trackId', ParseUUIDPipe) id: string) {
     try {
       return this.favoritesService.deleteTrack(id);
     } catch (err) {
@@ -53,8 +65,9 @@ export class FavoritesController {
     }
   }
 
-  @Post(`${ALBUM_PATH}/:id`)
-  addAlbum(@Param('id', ParseUUIDPipe) id: string) {
+  @Post(`${ALBUM_PATH}/:albumId`)
+  @PostAlbumFavsDescription()
+  addAlbum(@Param('albumId', ParseUUIDPipe) id: string) {
     try {
       this.favoritesService.addAlbum(id);
     } catch (err) {
@@ -64,9 +77,10 @@ export class FavoritesController {
     }
   }
 
-  @Delete(`${ALBUM_PATH}/:id`)
+  @Delete(`${ALBUM_PATH}/:albumId`)
+  @DeleteAlbumFavsDescription()
   @HttpCode(HttpStatus.NO_CONTENT)
-  deleteAlbum(@Param('id', ParseUUIDPipe) id: string) {
+  deleteAlbum(@Param('albumId', ParseUUIDPipe) id: string) {
     try {
       return this.favoritesService.deleteAlbum(id);
     } catch (err) {
@@ -76,8 +90,9 @@ export class FavoritesController {
     }
   }
 
-  @Post(`${ARTIST_PATH}/:id`)
-  addArtist(@Param('id', ParseUUIDPipe) id: string) {
+  @Post(`${ARTIST_PATH}/:artistId`)
+  @PostArtistFavsDescription()
+  addArtist(@Param('artistId', ParseUUIDPipe) id: string) {
     try {
       this.favoritesService.addArtist(id);
     } catch (err) {
@@ -87,9 +102,10 @@ export class FavoritesController {
     }
   }
 
-  @Delete(`${ARTIST_PATH}/:id`)
+  @Delete(`${ARTIST_PATH}/:artistId`)
+  @DeleteArtistFavsDescription()
   @HttpCode(HttpStatus.NO_CONTENT)
-  deleteArtist(@Param('id', ParseUUIDPipe) id: string) {
+  deleteArtist(@Param('artistId', ParseUUIDPipe) id: string) {
     try {
       return this.favoritesService.deleteArtist(id);
     } catch (err) {

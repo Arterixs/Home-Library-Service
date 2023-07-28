@@ -6,27 +6,27 @@ import {
   ApiOperation,
   ApiParam,
 } from '@nestjs/swagger';
-import { User } from 'src/modules/user/user.validation';
+import { Album } from 'src/modules/albums/albums.validation';
 
-export function GetUserByIdDescription() {
+export function GetAlbumByIdDescription() {
   return applyDecorators(
     ApiOperation({
-      summary: 'Get user by id',
-      description: 'Get single user by id',
+      summary: 'Get single album by id',
+      description: 'Gets single album by id',
     }),
     ApiParam({
-      name: 'userId',
+      name: 'albumId',
       format: 'uuid',
     }),
     ApiOkResponse({
       description: 'Successful operation.',
-      type: User,
+      type: Album,
     }),
     ApiBadRequestResponse({
-      description: 'Bad request. userId is invalid (not uuid)',
+      description: 'Bad request. albumId is invalid (not uuid)',
     }),
     ApiNotFoundResponse({
-      description: 'User not found',
+      description: 'Album was not found',
     }),
   );
 }

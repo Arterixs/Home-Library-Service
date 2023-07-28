@@ -17,6 +17,13 @@ import { ArtistsService } from './artists.service';
 import { Artist, CreateArtistDto, UpdateArtistDto } from './artists.validation';
 import { ARTIST_PATH } from 'src/constants/const';
 import { ApiTags } from '@nestjs/swagger';
+import {
+  DeleteArtistDescription,
+  GetAllArtistDescription,
+  GetArtistByIdDescription,
+  PostArtistDescription,
+  PutArtistDescription,
+} from 'src/swagger/artist';
 
 @ApiTags('Artist')
 @Controller(ARTIST_PATH)
@@ -24,12 +31,14 @@ export class ArtistsController {
   constructor(private readonly artistsService: ArtistsService) {}
 
   @Get()
+  @GetAllArtistDescription()
   getAll(): Artist[] {
     return this.artistsService.getArtists();
   }
 
-  @Get(':id')
-  getById(@Param('id', ParseUUIDPipe) id: string) {
+  @Get(':artistId')
+  @GetArtistByIdDescription()
+  getById(@Param('artistId', ParseUUIDPipe) id: string) {
     try {
       return this.artistsService.getArtistBuId(id);
     } catch (err) {
@@ -40,9 +49,10 @@ export class ArtistsController {
   }
 
   @UsePipes(new ValidationPipe())
-  @Put(':id')
+  @Put(':artistId')
+  @PutArtistDescription()
   change(
-    @Param('id', ParseUUIDPipe) id: string,
+    @Param('artistId', ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateArtistDto,
   ) {
     try {
@@ -54,9 +64,10 @@ export class ArtistsController {
     }
   }
 
-  @Delete(':id')
+  @Delete(':artistId')
+  @DeleteArtistDescription()
   @HttpCode(HttpStatus.NO_CONTENT)
-  delete(@Param('id', ParseUUIDPipe) id: string) {
+  delete(@Param('artistId', ParseUUIDPipe) id: string) {
     try {
       return this.artistsService.removeArtist(id);
     } catch (err) {
@@ -68,6 +79,7 @@ export class ArtistsController {
 
   @UsePipes(new ValidationPipe())
   @Post()
+  @PostArtistDescription()
   create(@Body() album: CreateArtistDto): Artist {
     return this.artistsService.setArtist(album);
   }
