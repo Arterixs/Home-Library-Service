@@ -19,17 +19,14 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto, User } from './user.validation';
 import { USER_PATH } from 'src/constants/const';
+import { ApiTags } from '@nestjs/swagger';
 import {
-  ApiBadRequestResponse,
-  ApiBody,
-  ApiCreatedResponse,
-  ApiForbiddenResponse,
-  ApiNoContentResponse,
-  ApiNotFoundResponse,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
+  DeleteUserDescription,
+  GetAllDescription,
+  GetUserByIdDescription,
+  PostUserDescription,
+  PutUserDescription,
+} from 'src/swagger/user';
 
 @ApiTags('User')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -38,30 +35,13 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Gets all users', description: 'Gets all users' })
-  @ApiOkResponse({
-    description: 'Successful operation',
-    type: [User],
-  })
+  @GetAllDescription()
   getUsers(): User[] {
     return this.userService.getUsers();
   }
 
   @Get(':userId')
-  @ApiOkResponse({
-    description: 'Successful operation.',
-    type: User,
-  })
-  @ApiBadRequestResponse({
-    description: 'Bad request. userId is invalid (not uuid)',
-  })
-  @ApiNotFoundResponse({
-    description: 'User not found',
-  })
-  @ApiOperation({
-    summary: 'Get user by id',
-    description: 'Get single user by id',
-  })
+  @GetUserByIdDescription()
   getUser(@Param('userId', ParseUUIDPipe) id: string) {
     try {
       return this.userService.getUserById(id);
@@ -74,37 +54,14 @@ export class UserController {
 
   @UsePipes(new ValidationPipe())
   @Post()
-  @ApiOperation({ summary: 'Create user', description: 'Creates a new user' })
-  @ApiCreatedResponse({
-    description: 'The user has been created.',
-    type: User,
-  })
-  @ApiBadRequestResponse({
-    description: 'Bad request. body does not contain required fields',
-  })
+  @PostUserDescription()
   createUser(@Body() user: CreateUserDto): User {
     return this.userService.setUser(user);
   }
 
   @UsePipes(new ValidationPipe())
   @Put(':userId')
-  @ApiOperation({
-    summary: 'Updates a users password by ID',
-    description: 'Updates a users password by ID',
-  })
-  @ApiOkResponse({
-    description: 'The user has been updated.',
-    type: User,
-  })
-  @ApiBadRequestResponse({
-    description: 'Bad request. userId is invalid (not uuid)',
-  })
-  @ApiForbiddenResponse({
-    description: 'oldPassword is wrong',
-  })
-  @ApiNotFoundResponse({
-    description: 'User not found',
-  })
+  @PutUserDescription()
   changeUser(
     @Param('userId', ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateUserDto,
@@ -122,16 +79,7 @@ export class UserController {
   }
 
   @Delete(':userId')
-  @ApiOperation({ summary: 'Deletes user', description: 'Deletes user by ID' })
-  @ApiNoContentResponse({
-    description: 'The user has been deleted',
-  })
-  @ApiBadRequestResponse({
-    description: 'Bad request. userId is invalid (not uuid)',
-  })
-  @ApiNotFoundResponse({
-    description: 'User not found',
-  })
+  @DeleteUserDescription()
   @HttpCode(HttpStatus.NO_CONTENT)
   removeUser(@Param('userId', ParseUUIDPipe) id: string) {
     try {
