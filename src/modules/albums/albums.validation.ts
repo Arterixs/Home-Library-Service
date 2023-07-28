@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsNotEmpty,
   IsNumber,
@@ -18,14 +19,17 @@ export class Album {
 }
 
 export class CreateAlbumDto {
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   name: string;
 
+  @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
   year: number;
 
+  @ApiProperty()
   @IsOptional()
   @IsUUID(4)
   @IsNotEmpty()
@@ -33,14 +37,17 @@ export class CreateAlbumDto {
 }
 
 export class UpdateAlbumDto {
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   name: string;
 
+  @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
   year: number;
 
+  @ApiProperty()
   @IsOptional()
   @IsUUID(4)
   @IsNotEmpty()

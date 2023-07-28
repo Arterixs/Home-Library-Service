@@ -16,7 +16,9 @@ import {
 import { AlbumsService } from './albums.service';
 import { Album, CreateAlbumDto, UpdateAlbumDto } from './albums.validation';
 import { ALBUM_PATH } from 'src/constants/const';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Album')
 @Controller(ALBUM_PATH)
 export class AlbumsController {
   constructor(private readonly albumsService: AlbumsService) {}

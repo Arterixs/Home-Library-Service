@@ -18,7 +18,9 @@ import {
   FAVS_PATH,
   TRACK_PATH,
 } from 'src/constants/const';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Favorites')
 @Controller(FAVS_PATH)
 export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}

@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UserModule } from './modules/user/user.module';
 import { TracksModule } from './modules/tracks/tracks.module';
 import { FavoritesModule } from './modules/favorites/favorites.module';
@@ -19,7 +17,5 @@ import { ConfigModule } from '@nestjs/config';
     DatabaseModule,
     ConfigModule.forRoot(),
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

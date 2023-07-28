@@ -16,7 +16,9 @@ import {
 import { ArtistsService } from './artists.service';
 import { Artist, CreateArtistDto, UpdateArtistDto } from './artists.validation';
 import { ARTIST_PATH } from 'src/constants/const';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Artist')
 @Controller(ARTIST_PATH)
 export class ArtistsController {
   constructor(private readonly artistsService: ArtistsService) {}
