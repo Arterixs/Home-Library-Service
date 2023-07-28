@@ -17,7 +17,10 @@ export class Album {
   @ApiProperty({ example: 2013 })
   year: number;
 
-  @ApiProperty({ example: '3fa85f64-5717-4562-b3fc-2c963f66afa6' })
+  @ApiProperty({
+    example: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    nullable: true,
+  })
   artistId: string | null;
 
   constructor(partial: Partial<Album>) {
@@ -36,7 +39,7 @@ export class CreateAlbumDto {
   @IsNotEmpty()
   year: number;
 
-  @ApiProperty({ example: null })
+  @ApiProperty({ example: null, nullable: true })
   @IsOptional()
   @IsUUID(4)
   @IsNotEmpty()
@@ -54,7 +57,10 @@ export class UpdateAlbumDto {
   @IsNotEmpty()
   year: number;
 
-  @ApiProperty({ example: '3fa85f64-5717-4562-b3fc-2c963f66afa6' })
+  @ApiProperty({
+    example: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    nullable: true,
+  })
   @IsOptional()
   @IsUUID(4)
   @IsNotEmpty()

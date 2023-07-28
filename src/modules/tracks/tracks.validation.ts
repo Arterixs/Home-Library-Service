@@ -14,10 +14,13 @@ export class Track {
   @ApiProperty({ example: 'Toca Toca' })
   name: string;
 
-  @ApiProperty({ example: '3fa85f64-5717-4562-b3fc-2c963f66afa6' })
+  @ApiProperty({
+    example: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    nullable: true,
+  })
   artistId: string | null;
 
-  @ApiProperty({ example: null })
+  @ApiProperty({ example: null, nullable: true })
   albumId: string | null;
 
   @ApiProperty({ example: 160 })
@@ -34,13 +37,16 @@ export class CreateTrackDto {
   @IsNotEmpty()
   name: string;
 
-  @ApiProperty({ example: '3fa85f64-5717-4562-b3fc-2c963f66afa6' })
+  @ApiProperty({
+    example: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    nullable: true,
+  })
   @IsOptional()
   @IsUUID(4)
   @IsNotEmpty()
   artistId: string | null;
 
-  @ApiProperty({ example: null })
+  @ApiProperty({ example: null, nullable: true })
   @IsOptional()
   @IsUUID(4)
   @IsNotEmpty()
@@ -58,13 +64,19 @@ export class UpdateTrackDto {
   @IsNotEmpty()
   name: string;
 
-  @ApiProperty({ example: '3fa85f64-5717-4562-b3fc-2c963f66afa6' })
+  @ApiProperty({
+    example: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    nullable: true,
+  })
   @IsOptional()
   @IsUUID(4)
   @IsNotEmpty()
   artistId: string | null;
 
-  @ApiProperty({ example: '3fa85f64-5717-4562-b3fc-2c963f66afa6' })
+  @ApiProperty({
+    example: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    nullable: true,
+  })
   @IsOptional()
   @IsUUID(4)
   @IsNotEmpty()
