@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { FavoritesDBService } from './favorites-db.service';
 import { FavoritesResponse } from './favorites.validation';
-import { TracksDBService } from 'src/tracks/tracks-db.service';
-import { AlbumsDBService } from 'src/albums/albums-db.service';
-import { ArtistsDBService } from 'src/artists/artists-db.service';
+import { TracksDBService } from 'src/modules/tracks/tracks-db.service';
+import { AlbumsDBService } from 'src/modules/albums/albums-db.service';
+import { ArtistsDBService } from 'src/modules/artists/artists-db.service';
 
 @Injectable()
 export class FavoritesService {

@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto, User } from './user.validation';
 import { v4 as uuidv4 } from 'uuid';
-import { UsersDBService } from 'src/user/users-db.service';
+import { UsersDBService } from 'src/modules/user/users-db.service';
 
 @Injectable()
 export class UserService {

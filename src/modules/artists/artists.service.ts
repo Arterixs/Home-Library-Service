@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { ArtistsDBService } from 'src/artists/artists-db.service';
+import { ArtistsDBService } from 'src/modules/artists/artists-db.service';
 import { Artist, CreateArtistDto, UpdateArtistDto } from './artists.validation';
 import { v4 as uuidv4 } from 'uuid';
-import { AlbumsDBService } from 'src/albums/albums-db.service';
-import { TracksDBService } from 'src/tracks/tracks-db.service';
-import { FavoritesDBService } from 'src/favorites/favorites-db.service';
+import { AlbumsDBService } from 'src/modules/albums/albums-db.service';
+import { TracksDBService } from 'src/modules/tracks/tracks-db.service';
+import { FavoritesDBService } from 'src/modules/favorites/favorites-db.service';
 
 @Injectable()
 export class ArtistsService {

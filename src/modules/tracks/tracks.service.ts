@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateTrackDto, Track, UpdateTrackDto } from './tracks.validation';
-import { TracksDBService } from 'src/tracks/tracks-db.service';
+import { TracksDBService } from 'src/modules/tracks/tracks-db.service';
 import { v4 as uuidv4 } from 'uuid';
-import { FavoritesDBService } from 'src/favorites/favorites-db.service';
+import { FavoritesDBService } from 'src/modules/favorites/favorites-db.service';
 
 @Injectable()
 export class TracksService {

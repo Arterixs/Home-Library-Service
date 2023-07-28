@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { Album } from 'src/albums/albums.validation';
-import { Artist } from 'src/artists/artists.validation';
-import { Track } from 'src/tracks/tracks.validation';
+import { Album } from 'src/modules/albums/albums.validation';
+import { Artist } from 'src/modules/artists/artists.validation';
+import { Track } from 'src/modules/tracks/tracks.validation';
 
 @Injectable()
 export class FavoritesDBService {
