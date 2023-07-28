@@ -2,6 +2,11 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto, User } from './user.validation';
 import { v4 as uuidv4 } from 'uuid';
 import { UsersDBService } from 'src/modules/user/users-db.service';
+import {
+  INCREMENT_COUNT,
+  PASSWORD_FORBIDDEN,
+  USER_NOT_FOUND,
+} from 'src/constants/const';
 
 @Injectable()
 export class UserService {
@@ -34,7 +39,7 @@ export class UserService {
   checkUserById(id: string) {
     const isUser = this.dataBase.checkUser(id);
     if (!isUser) {
-      throw new HttpException('User is not exist', HttpStatus.NOT_FOUND);
+      throw new HttpException(USER_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
   }
 
@@ -52,17 +57,14 @@ export class UserService {
       ...user,
       password: newPassword,
       updatedAt: Date.now(),
-      version: user.version + 1,
+      version: user.version + INCREMENT_COUNT,
     };
   }
 
   checkPasswordUser(currentPassword: string, oldPassword: string) {
     const isEqualPassword = currentPassword === oldPassword;
     if (!isEqualPassword) {
-      throw new HttpException(
-        'Old password is not correct',
-        HttpStatus.FORBIDDEN,
-      );
+      throw new HttpException(PASSWORD_FORBIDDEN, HttpStatus.FORBIDDEN);
     }
   }
 

@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AlbumsDBService } from 'src/modules/albums/albums-db.service';
 import { TracksDBService } from 'src/modules/tracks/tracks-db.service';
 import { FavoritesDBService } from 'src/modules/favorites/favorites-db.service';
+import { ARTIST_NOT_FOUND } from 'src/constants/const';
 
 @Injectable()
 export class ArtistsService {
@@ -33,7 +34,7 @@ export class ArtistsService {
   checkArtist(id: string) {
     const isArtist = this.dataBase.checkArtist(id);
     if (!isArtist) {
-      throw new HttpException('Artist is not exist', HttpStatus.NOT_FOUND);
+      throw new HttpException(ARTIST_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
   }
 

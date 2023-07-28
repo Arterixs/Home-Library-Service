@@ -4,6 +4,7 @@ import { Album, CreateAlbumDto, UpdateAlbumDto } from './albums.validation';
 import { v4 as uuidv4 } from 'uuid';
 import { TracksDBService } from 'src/modules/tracks/tracks-db.service';
 import { FavoritesDBService } from 'src/modules/favorites/favorites-db.service';
+import { ALBUM_NOT_FOUND } from 'src/constants/const';
 
 @Injectable()
 export class AlbumsService {
@@ -31,7 +32,7 @@ export class AlbumsService {
   checkAlbumId(id: string) {
     const isAlbum = this.dataBase.checkAlbum(id);
     if (!isAlbum) {
-      throw new HttpException('Album is not exist', HttpStatus.NOT_FOUND);
+      throw new HttpException(ALBUM_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
   }
 

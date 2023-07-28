@@ -3,6 +3,7 @@ import { CreateTrackDto, Track, UpdateTrackDto } from './tracks.validation';
 import { TracksDBService } from 'src/modules/tracks/tracks-db.service';
 import { v4 as uuidv4 } from 'uuid';
 import { FavoritesDBService } from 'src/modules/favorites/favorites-db.service';
+import { TRACK_NOT_FOUND } from 'src/constants/const';
 
 @Injectable()
 export class TracksService {
@@ -29,7 +30,7 @@ export class TracksService {
   checkTrack(id: string) {
     const isTrack = this.dataBase.checkTracks(id);
     if (!isTrack) {
-      throw new HttpException('Artist is not exist', HttpStatus.NOT_FOUND);
+      throw new HttpException(TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
   }
 

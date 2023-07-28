@@ -4,6 +4,14 @@ import { FavoritesResponse } from './favorites.validation';
 import { TracksDBService } from 'src/modules/tracks/tracks-db.service';
 import { AlbumsDBService } from 'src/modules/albums/albums-db.service';
 import { ArtistsDBService } from 'src/modules/artists/artists-db.service';
+import {
+  ALBUM_FAVS_NOT_FOUND,
+  ALBUM_NOT_FOUND,
+  ARTIST_FAVS_NOT_FOUND,
+  ARTIST_NOT_FOUND,
+  TRACK_FAVS_NOT_FOUND,
+  TRACK_NOT_FOUND,
+} from 'src/constants/const';
 
 @Injectable()
 export class FavoritesService {
@@ -20,20 +28,14 @@ export class FavoritesService {
   checkTrackInServTracks(id: string) {
     const isTrack = this.tracksService.checkTracks(id);
     if (!isTrack) {
-      throw new HttpException(
-        'Tracks is not exist',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
+      throw new HttpException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
     }
   }
 
   checkTrackInFavs(id: string) {
     const isTrack = this.dataBase.checkTrack(id);
     if (!isTrack) {
-      throw new HttpException(
-        'Tracks is not exist in favorites',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException(TRACK_FAVS_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
   }
 
@@ -55,20 +57,14 @@ export class FavoritesService {
   checkAlbumInServAlbums(id: string) {
     const isAlbum = this.albumService.checkAlbum(id);
     if (!isAlbum) {
-      throw new HttpException(
-        'Album is not exist',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
+      throw new HttpException(ALBUM_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
     }
   }
 
   checkAlbumInFavs(id: string) {
     const isAlbum = this.dataBase.checkAlbum(id);
     if (!isAlbum) {
-      throw new HttpException(
-        'Tracks is not exist in favorites',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException(ALBUM_FAVS_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
   }
 
@@ -91,7 +87,7 @@ export class FavoritesService {
     const isArtist = this.artistService.checkArtist(id);
     if (!isArtist) {
       throw new HttpException(
-        'Album is not exist',
+        ARTIST_NOT_FOUND,
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }
@@ -100,10 +96,7 @@ export class FavoritesService {
   checkArtistInFavs(id: string) {
     const isArtist = this.dataBase.checkArtist(id);
     if (!isArtist) {
-      throw new HttpException(
-        'Tracks is not exist in favorites',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException(ARTIST_FAVS_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
   }
 
