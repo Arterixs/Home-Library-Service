@@ -12,8 +12,14 @@ import {
 } from '@nestjs/common';
 import { FavoritesService } from './favorites.service';
 import { FavoritesResponse } from './favorites.validation';
+import {
+  ALBUM_PATH,
+  ARTIST_PATH,
+  FAVS_PATH,
+  TRACK_PATH,
+} from 'src/constants/const';
 
-@Controller('favs')
+@Controller(FAVS_PATH)
 export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}
 
@@ -22,7 +28,7 @@ export class FavoritesController {
     return this.favoritesService.getFavs();
   }
 
-  @Post('track/:id')
+  @Post(`${TRACK_PATH}/:id`)
   addTrack(@Param('id', ParseUUIDPipe) id: string) {
     try {
       this.favoritesService.addTrack(id);
@@ -33,7 +39,7 @@ export class FavoritesController {
     }
   }
 
-  @Delete('track/:id')
+  @Delete(`${TRACK_PATH}/:id`)
   @HttpCode(HttpStatus.NO_CONTENT)
   deleteTrack(@Param('id', ParseUUIDPipe) id: string) {
     try {
@@ -45,7 +51,7 @@ export class FavoritesController {
     }
   }
 
-  @Post('album/:id')
+  @Post(`${ALBUM_PATH}/:id`)
   addAlbum(@Param('id', ParseUUIDPipe) id: string) {
     try {
       this.favoritesService.addAlbum(id);
@@ -56,7 +62,7 @@ export class FavoritesController {
     }
   }
 
-  @Delete('album/:id')
+  @Delete(`${ALBUM_PATH}/:id`)
   @HttpCode(HttpStatus.NO_CONTENT)
   deleteAlbum(@Param('id', ParseUUIDPipe) id: string) {
     try {
@@ -68,7 +74,7 @@ export class FavoritesController {
     }
   }
 
-  @Post('artist/:id')
+  @Post(`${ARTIST_PATH}/:id`)
   addArtist(@Param('id', ParseUUIDPipe) id: string) {
     try {
       this.favoritesService.addArtist(id);
@@ -79,7 +85,7 @@ export class FavoritesController {
     }
   }
 
-  @Delete('artist/:id')
+  @Delete(`${ARTIST_PATH}/:id`)
   @HttpCode(HttpStatus.NO_CONTENT)
   deleteArtist(@Param('id', ParseUUIDPipe) id: string) {
     try {

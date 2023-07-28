@@ -15,8 +15,9 @@ import {
 } from '@nestjs/common';
 import { ArtistsService } from './artists.service';
 import { Artist, CreateArtistDto, UpdateArtistDto } from './artists.validation';
+import { ARTIST_PATH } from 'src/constants/const';
 
-@Controller('artist')
+@Controller(ARTIST_PATH)
 export class ArtistsController {
   constructor(private readonly artistsService: ArtistsService) {}
 

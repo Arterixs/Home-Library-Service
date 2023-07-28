@@ -15,8 +15,9 @@ import {
 } from '@nestjs/common';
 import { AlbumsService } from './albums.service';
 import { Album, CreateAlbumDto, UpdateAlbumDto } from './albums.validation';
+import { ALBUM_PATH } from 'src/constants/const';
 
-@Controller('album')
+@Controller(ALBUM_PATH)
 export class AlbumsController {
   constructor(private readonly albumsService: AlbumsService) {}
 

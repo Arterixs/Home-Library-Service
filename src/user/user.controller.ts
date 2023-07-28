@@ -18,9 +18,10 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto, User } from './user.validation';
+import { USER_PATH } from 'src/constants/const';
 
 @UseInterceptors(ClassSerializerInterceptor)
-@Controller('user')
+@Controller(USER_PATH)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

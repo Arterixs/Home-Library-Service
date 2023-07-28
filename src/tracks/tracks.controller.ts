@@ -15,8 +15,9 @@ import {
 } from '@nestjs/common';
 import { TracksService } from './tracks.service';
 import { CreateTrackDto, Track, UpdateTrackDto } from './tracks.validation';
+import { TRACK_PATH } from 'src/constants/const';
 
-@Controller('track')
+@Controller(TRACK_PATH)
 export class TracksController {
   constructor(private readonly tracksService: TracksService) {}
 
