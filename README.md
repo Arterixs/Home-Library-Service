@@ -205,7 +205,7 @@ Bodies of **POST** or **PUT** requests **must be** in the following format:
 - `name` — name of the track (`string`, **required**)
 - `artistId` — id of the artist of this track (`string` or `null`, format: `UUID`, **required**)
 - `albumId` — id of the album of this track (`string` or `null`, format: `UUID`, **required**)
-- `duration` — duration of this track (`number`, **required**)
+- `duration` — duration of this track (`number`, format: in seconds, **required**)
 
 ### Album
 
@@ -214,4 +214,4 @@ Bodies of **POST** or **PUT** requests **must be** in the following format:
 - `name` — name of the album (`string`, **required**)
 - `year` — album release year (`number`, **required**)
 - `artistId` — id of the artist of this album (`string` or `null`, format: `UUID`, **required**)
-- `duration` — duration of this track (`number`, **required**)
+- `duration` — duration of this track (`number`, format: in seconds, **required**)

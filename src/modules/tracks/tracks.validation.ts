@@ -23,7 +23,7 @@ export class Track {
   @ApiProperty({ example: null, nullable: true })
   albumId: string | null;
 
-  @ApiProperty({ example: 160 })
+  @ApiProperty({ example: 160, description: 'In seconds' })
   duration: number;
 
   constructor(partial: Partial<Track>) {
@@ -52,7 +52,7 @@ export class CreateTrackDto {
   @IsNotEmpty()
   albumId: string | null;
 
-  @ApiProperty({ example: 160 })
+  @ApiProperty({ example: 160, description: 'In seconds' })
   @IsNumber()
   @IsNotEmpty()
   duration: number;
@@ -82,7 +82,7 @@ export class UpdateTrackDto {
   @IsNotEmpty()
   albumId: string | null;
 
-  @ApiProperty({ example: 320 })
+  @ApiProperty({ example: 320, description: 'In seconds' })
   @IsNumber()
   @IsNotEmpty()
   duration: number;
