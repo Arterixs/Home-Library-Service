@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { TracksService } from './tracks.service';
 import { CreateTrackDto, Track, UpdateTrackDto } from './tracks.validation';
-import { TRACK_PATH } from 'src/constants/const';
+import { TRACK_PARAM, TRACK_PATH } from 'src/constants/const';
 import { ApiTags } from '@nestjs/swagger';
 import {
   DeleteTrackDescription,
@@ -34,9 +34,9 @@ export class TracksController {
     return this.tracksService.getTracks();
   }
 
-  @Get(':trackId')
+  @Get(`:${TRACK_PARAM}`)
   @GetTrackByIdDescription()
-  getById(@Param('trackId', ParseUUIDPipe) id: string) {
+  getById(@Param(TRACK_PARAM, ParseUUIDPipe) id: string) {
     try {
       return this.tracksService.getTrackBuId(id);
     } catch (err) {
@@ -52,10 +52,10 @@ export class TracksController {
     return this.tracksService.setTrack(album);
   }
 
-  @Put(':trackId')
+  @Put(`:${TRACK_PARAM}`)
   @PutTrackDescription()
   change(
-    @Param('trackId', ParseUUIDPipe) id: string,
+    @Param(TRACK_PARAM, ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateTrackDto,
   ) {
     try {
@@ -67,10 +67,10 @@ export class TracksController {
     }
   }
 
-  @Delete(':trackId')
+  @Delete(`:${TRACK_PARAM}`)
   @DeleteTrackDescription()
   @HttpCode(HttpStatus.NO_CONTENT)
-  delete(@Param('trackId', ParseUUIDPipe) id: string) {
+  delete(@Param(TRACK_PARAM, ParseUUIDPipe) id: string) {
     try {
       return this.tracksService.removeTrack(id);
     } catch (err) {

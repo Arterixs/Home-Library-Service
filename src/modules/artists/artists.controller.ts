@@ -10,12 +10,10 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { ArtistsService } from './artists.service';
 import { Artist, CreateArtistDto, UpdateArtistDto } from './artists.validation';
-import { ARTIST_PATH } from 'src/constants/const';
+import { ARTIST_PARAM, ARTIST_PATH } from 'src/constants/const';
 import { ApiTags } from '@nestjs/swagger';
 import {
   DeleteArtistDescription,
@@ -36,9 +34,9 @@ export class ArtistsController {
     return this.artistsService.getArtists();
   }
 
-  @Get(':artistId')
+  @Get(`:${ARTIST_PARAM}`)
   @GetArtistByIdDescription()
-  getById(@Param('artistId', ParseUUIDPipe) id: string) {
+  getById(@Param(ARTIST_PARAM, ParseUUIDPipe) id: string) {
     try {
       return this.artistsService.getArtistBuId(id);
     } catch (err) {
@@ -54,10 +52,10 @@ export class ArtistsController {
     return this.artistsService.setArtist(album);
   }
 
-  @Put(':artistId')
+  @Put(`:${ARTIST_PARAM}`)
   @PutArtistDescription()
   change(
-    @Param('artistId', ParseUUIDPipe) id: string,
+    @Param(ARTIST_PARAM, ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateArtistDto,
   ) {
     try {
@@ -69,10 +67,10 @@ export class ArtistsController {
     }
   }
 
-  @Delete(':artistId')
+  @Delete(`:${ARTIST_PARAM}`)
   @DeleteArtistDescription()
   @HttpCode(HttpStatus.NO_CONTENT)
-  delete(@Param('artistId', ParseUUIDPipe) id: string) {
+  delete(@Param(ARTIST_PARAM, ParseUUIDPipe) id: string) {
     try {
       return this.artistsService.removeArtist(id);
     } catch (err) {

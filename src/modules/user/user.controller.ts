@@ -16,7 +16,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto, User } from './user.validation';
-import { USER_PATH } from 'src/constants/const';
+import { USER_PARAM, USER_PATH } from 'src/constants/const';
 import { ApiTags } from '@nestjs/swagger';
 import {
   DeleteUserDescription,
@@ -38,9 +38,9 @@ export class UserController {
     return this.userService.getUsers();
   }
 
-  @Get(':userId')
+  @Get(`:${USER_PARAM}`)
   @GetUserByIdDescription()
-  getUser(@Param('userId', ParseUUIDPipe) id: string) {
+  getUser(@Param(USER_PARAM, ParseUUIDPipe) id: string) {
     try {
       return this.userService.getUserById(id);
     } catch (err) {
@@ -56,10 +56,10 @@ export class UserController {
     return this.userService.setUser(user);
   }
 
-  @Put(':userId')
+  @Put(`:${USER_PARAM}`)
   @PutUserDescription()
   changeUser(
-    @Param('userId', ParseUUIDPipe) id: string,
+    @Param(USER_PARAM, ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
     try {
@@ -74,10 +74,10 @@ export class UserController {
     }
   }
 
-  @Delete(':userId')
+  @Delete(`:${USER_PARAM}`)
   @DeleteUserDescription()
   @HttpCode(HttpStatus.NO_CONTENT)
-  removeUser(@Param('userId', ParseUUIDPipe) id: string) {
+  removeUser(@Param(USER_PARAM, ParseUUIDPipe) id: string) {
     try {
       return this.userService.removeUser(id);
     } catch (err) {

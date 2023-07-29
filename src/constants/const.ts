@@ -6,6 +6,11 @@ export const ARTIST_PATH = 'artist';
 export const USER_PATH = 'user';
 export const FAVS_PATH = 'favs';
 
+export const ALBUM_PARAM = 'albumId';
+export const TRACK_PARAM = 'trackId';
+export const ARTIST_PARAM = 'artistId';
+export const USER_PARAM = 'userId';
+
 export const INCREMENT_COUNT = 1;
 
 export const TRACK_NOT_FOUND = 'Track is not exist';

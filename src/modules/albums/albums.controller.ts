@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { AlbumsService } from './albums.service';
 import { Album, CreateAlbumDto, UpdateAlbumDto } from './albums.validation';
-import { ALBUM_PATH } from 'src/constants/const';
+import { ALBUM_PARAM, ALBUM_PATH } from 'src/constants/const';
 import { ApiTags } from '@nestjs/swagger';
 import {
   DeleteAlbumDescription,
@@ -34,9 +34,9 @@ export class AlbumsController {
     return this.albumsService.getAlbums();
   }
 
-  @Get(':albumId')
+  @Get(`:${ALBUM_PARAM}`)
   @GetAlbumByIdDescription()
-  getById(@Param('albumId', ParseUUIDPipe) id: string) {
+  getById(@Param(ALBUM_PARAM, ParseUUIDPipe) id: string) {
     try {
       return this.albumsService.getAlbumBuId(id);
     } catch (err) {
@@ -52,10 +52,10 @@ export class AlbumsController {
     return this.albumsService.setAlbum(album);
   }
 
-  @Put(':albumId')
+  @Put(`:${ALBUM_PARAM}`)
   @PutAlbumDescription()
   change(
-    @Param('albumId', ParseUUIDPipe) id: string,
+    @Param(ALBUM_PARAM, ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateAlbumDto,
   ) {
     try {
@@ -67,10 +67,10 @@ export class AlbumsController {
     }
   }
 
-  @Delete(':albumId')
+  @Delete(`:${ALBUM_PARAM}`)
   @DeleteAlbumDescription()
   @HttpCode(HttpStatus.NO_CONTENT)
-  delete(@Param('albumId', ParseUUIDPipe) id: string) {
+  delete(@Param(ALBUM_PARAM, ParseUUIDPipe) id: string) {
     try {
       return this.albumsService.removeAlbum(id);
     } catch (err) {
