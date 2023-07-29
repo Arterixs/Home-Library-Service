@@ -181,26 +181,26 @@ For more information about **OpenAPI/Swagger** please visit `https://swagger.io/
 
 ### User
 
-Body of ** POST** request **must be** in the following format:
+Body of **POST** request **must be** in the following format:
 
 - `login` — user's login (`string`, **required**)
 - `password` — user's password (`number`, **required**)
 
-Body of ** PUT** request **must be** in the following format:
+Body of **PUT** request **must be** in the following format:
 
 - `oldPassword` — user's old password (`string`, **required**)
 - `newPassword` — user's new password (`string`, **required**)
 
 ### Artist
 
-Bodies of ** POST** or **PUT** requests **must be** in the following format:
+Bodies of **POST** or **PUT** requests **must be** in the following format:
 
 - `name` — artist's username (`string`, **required**)
 - `grammy` — the presence of a grammy (`boolean`, **required**)
 
 ### Track
 
-Bodies of ** POST** or **PUT** requests **must be** in the following format:
+Bodies of **POST** or **PUT** requests **must be** in the following format:
 
 - `name` — name of the track (`string`, **required**)
 - `artistId` — id of the artist of this track (`string` or `null`, format: `UUID`, **required**)
@@ -209,7 +209,7 @@ Bodies of ** POST** or **PUT** requests **must be** in the following format:
 
 ### Album
 
-Bodies of ** POST** or **PUT** requests **must be** in the following format:
+Bodies of **POST** or **PUT** requests **must be** in the following format:
 
 - `name` — name of the album (`string`, **required**)
 - `year` — album release year (`number`, **required**)
