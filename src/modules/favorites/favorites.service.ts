@@ -21,8 +21,13 @@ export class FavoritesService {
     private readonly albumService: AlbumsDBService,
     private readonly artistService: ArtistsDBService,
   ) {}
+
   getFavs(): FavoritesResponse {
-    return this.dataBase.getAll();
+    const favorites = this.dataBase.getAll();
+    const albums = favorites.albums.map((id) => this.getAlbumByIdInDB(id));
+    const artists = favorites.artists.map((id) => this.getArtistByIdInDB(id));
+    const tracks = favorites.tracks.map((id) => this.getTrackByIdInDB(id));
+    return { albums, artists, tracks };
   }
 
   checkTrackInServTracks(id: string) {
@@ -50,8 +55,7 @@ export class FavoritesService {
 
   addTrack(id: string) {
     this.checkTrackInServTracks(id);
-    const track = this.getTrackByIdInDB(id);
-    this.dataBase.addTrack(track);
+    this.dataBase.addTrack(id);
   }
 
   checkAlbumInServAlbums(id: string) {
@@ -79,8 +83,7 @@ export class FavoritesService {
 
   addAlbum(id: string) {
     this.checkAlbumInServAlbums(id);
-    const album = this.getAlbumByIdInDB(id);
-    this.dataBase.addAlbum(album);
+    this.dataBase.addAlbum(id);
   }
 
   checkArtistInServArtists(id: string) {
@@ -111,7 +114,6 @@ export class FavoritesService {
 
   addArtist(id: string) {
     this.checkArtistInServArtists(id);
-    const artist = this.getArtistByIdInDB(id);
-    this.dataBase.addArtist(artist);
+    this.dataBase.addArtist(id);
   }
 }

@@ -1,13 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { Album } from 'src/modules/albums/albums.validation';
-import { Artist } from 'src/modules/artists/artists.validation';
-import { Track } from 'src/modules/tracks/tracks.validation';
 
 @Injectable()
 export class FavoritesDBService {
-  private artists: Map<string, Artist> = new Map();
-  private albums: Map<string, Album> = new Map();
-  private tracks: Map<string, Track> = new Map();
+  private artists: Map<string, string> = new Map();
+  private albums: Map<string, string> = new Map();
+  private tracks: Map<string, string> = new Map();
 
   getAll() {
     return {
@@ -17,39 +14,39 @@ export class FavoritesDBService {
     };
   }
 
-  addTrack(track: Track) {
-    this.tracks.set(track.id, track);
+  addTrack(trackId: string) {
+    this.tracks.set(trackId, trackId);
   }
 
-  deleteTrack(id: string) {
-    this.tracks.delete(id);
+  deleteTrack(trackId: string) {
+    this.tracks.delete(trackId);
   }
 
-  checkTrack(id: string) {
-    return this.tracks.has(id);
+  checkTrack(trackId: string) {
+    return this.tracks.has(trackId);
   }
 
-  addAlbum(album: Album) {
-    this.albums.set(album.id, album);
+  addAlbum(albumId: string) {
+    this.albums.set(albumId, albumId);
   }
 
-  deleteAlbum(id: string) {
-    this.albums.delete(id);
+  deleteAlbum(albumId: string) {
+    this.albums.delete(albumId);
   }
 
-  checkAlbum(id: string) {
-    return this.albums.has(id);
+  checkAlbum(albumId: string) {
+    return this.albums.has(albumId);
   }
 
-  addArtist(artist: Artist) {
-    this.artists.set(artist.id, artist);
+  addArtist(artistId: string) {
+    this.artists.set(artistId, artistId);
   }
 
-  deleteArtist(id: string) {
-    this.artists.delete(id);
+  deleteArtist(artistId: string) {
+    this.artists.delete(artistId);
   }
 
-  checkArtist(id: string) {
-    return this.artists.has(id);
+  checkArtist(artistId: string) {
+    return this.artists.has(artistId);
   }
 }
