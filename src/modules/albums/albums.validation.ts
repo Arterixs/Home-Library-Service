@@ -2,9 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsNotEmpty,
   IsNumber,
-  IsOptional,
   IsString,
   IsUUID,
+  ValidateIf,
 } from 'class-validator';
 
 export class Album {
@@ -40,7 +40,7 @@ export class CreateAlbumDto {
   year: number;
 
   @ApiProperty({ example: null, nullable: true })
-  @IsOptional()
+  @ValidateIf((album: Album) => album.artistId !== null)
   @IsUUID(4)
   @IsNotEmpty()
   artistId: string | null;
@@ -61,7 +61,7 @@ export class UpdateAlbumDto {
     example: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
     nullable: true,
   })
-  @IsOptional()
+  @ValidateIf((album: Album) => album.artistId !== null)
   @IsUUID(4)
   @IsNotEmpty()
   artistId: string | null;

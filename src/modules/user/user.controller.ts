@@ -13,8 +13,6 @@ import {
   Post,
   Put,
   UseInterceptors,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto, User } from './user.validation';
@@ -52,14 +50,12 @@ export class UserController {
     }
   }
 
-  @UsePipes(new ValidationPipe())
   @Post()
   @PostUserDescription()
   createUser(@Body() user: CreateUserDto): User {
     return this.userService.setUser(user);
   }
 
-  @UsePipes(new ValidationPipe())
   @Put(':userId')
   @PutUserDescription()
   changeUser(

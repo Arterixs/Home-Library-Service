@@ -48,7 +48,12 @@ export class ArtistsController {
     }
   }
 
-  @UsePipes(new ValidationPipe())
+  @Post()
+  @PostArtistDescription()
+  create(@Body() album: CreateArtistDto): Artist {
+    return this.artistsService.setArtist(album);
+  }
+
   @Put(':artistId')
   @PutArtistDescription()
   change(
@@ -75,12 +80,5 @@ export class ArtistsController {
         throw new NotFoundException(err.message);
       }
     }
-  }
-
-  @UsePipes(new ValidationPipe())
-  @Post()
-  @PostArtistDescription()
-  create(@Body() album: CreateArtistDto): Artist {
-    return this.artistsService.setArtist(album);
   }
 }

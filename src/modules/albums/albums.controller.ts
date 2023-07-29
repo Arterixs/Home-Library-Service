@@ -10,8 +10,6 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { AlbumsService } from './albums.service';
 import { Album, CreateAlbumDto, UpdateAlbumDto } from './albums.validation';
@@ -48,7 +46,12 @@ export class AlbumsController {
     }
   }
 
-  @UsePipes(new ValidationPipe())
+  @Post()
+  @PostAlbumDescription()
+  create(@Body() album: CreateAlbumDto): Album {
+    return this.albumsService.setAlbum(album);
+  }
+
   @Put(':albumId')
   @PutAlbumDescription()
   change(
@@ -75,12 +78,5 @@ export class AlbumsController {
         throw new NotFoundException(err.message);
       }
     }
-  }
-
-  @UsePipes(new ValidationPipe())
-  @Post()
-  @PostAlbumDescription()
-  create(@Body() album: CreateAlbumDto): Album {
-    return this.albumsService.setAlbum(album);
   }
 }

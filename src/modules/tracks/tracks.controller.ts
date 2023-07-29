@@ -10,8 +10,6 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { TracksService } from './tracks.service';
 import { CreateTrackDto, Track, UpdateTrackDto } from './tracks.validation';
@@ -48,7 +46,12 @@ export class TracksController {
     }
   }
 
-  @UsePipes(new ValidationPipe())
+  @Post()
+  @PostTrackDescription()
+  create(@Body() album: CreateTrackDto): Track {
+    return this.tracksService.setTrack(album);
+  }
+
   @Put(':trackId')
   @PutTrackDescription()
   change(
@@ -75,12 +78,5 @@ export class TracksController {
         throw new NotFoundException(err.message);
       }
     }
-  }
-
-  @UsePipes(new ValidationPipe())
-  @Post()
-  @PostTrackDescription()
-  create(@Body() album: CreateTrackDto): Track {
-    return this.tracksService.setTrack(album);
   }
 }

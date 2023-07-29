@@ -2,9 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsNotEmpty,
   IsNumber,
-  IsOptional,
   IsString,
   IsUUID,
+  ValidateIf,
 } from 'class-validator';
 
 export class Track {
@@ -41,13 +41,13 @@ export class CreateTrackDto {
     example: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
     nullable: true,
   })
-  @IsOptional()
+  @ValidateIf((track: Track) => track.artistId !== null)
   @IsUUID(4)
   @IsNotEmpty()
   artistId: string | null;
 
   @ApiProperty({ example: null, nullable: true })
-  @IsOptional()
+  @ValidateIf((track: Track) => track.albumId !== null)
   @IsUUID(4)
   @IsNotEmpty()
   albumId: string | null;
@@ -68,7 +68,7 @@ export class UpdateTrackDto {
     example: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
     nullable: true,
   })
-  @IsOptional()
+  @ValidateIf((track: Track) => track.artistId !== null)
   @IsUUID(4)
   @IsNotEmpty()
   artistId: string | null;
@@ -77,7 +77,7 @@ export class UpdateTrackDto {
     example: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
     nullable: true,
   })
-  @IsOptional()
+  @ValidateIf((track: Track) => track.albumId !== null)
   @IsUUID(4)
   @IsNotEmpty()
   albumId: string | null;
