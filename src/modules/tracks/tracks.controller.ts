@@ -20,7 +20,7 @@ import {
   GetTrackByIdDescription,
   PostTrackDescription,
   PutTrackDescription,
-} from 'src/swagger/track';
+} from './swagger';
 import { Track } from './entity/track';
 import { CreateTrackDto } from './dto/create-track';
 import { UpdateTrackDto } from './dto/update-track';

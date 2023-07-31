@@ -29,7 +29,7 @@ import {
   PostAlbumFavsDescription,
   PostArtistFavsDescription,
   PostTrackFavsDescription,
-} from 'src/swagger/favorites';
+} from './swagger';
 import { FavoritesResponse } from './types/response';
 
 @ApiTags('Favs')

@@ -17,16 +17,16 @@ import {
 import { UserService } from './user.service';
 import { USER_PARAM, USER_PATH } from 'src/constants/const';
 import { ApiTags } from '@nestjs/swagger';
-import {
-  DeleteUserDescription,
-  GetUserByIdDescription,
-  PostUserDescription,
-  PutUserDescription,
-} from 'src/swagger/user';
-import { GetAllUsersDescription } from 'src/swagger/get-all-user';
 import { User } from './entity/user';
 import { CreateUserDto } from './dto/create-dto';
 import { UpdateUserDto } from './dto/update-dto';
+import {
+  DeleteUserDescription,
+  GetAllUsersDescription,
+  GetUserByIdDescription,
+  PostUserDescription,
+  PutUserDescription,
+} from './swagger';
 
 @ApiTags('User')
 @UseInterceptors(ClassSerializerInterceptor)

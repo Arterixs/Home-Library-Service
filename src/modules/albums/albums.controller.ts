@@ -20,7 +20,7 @@ import {
   GetAllAlbumsDescription,
   PostAlbumDescription,
   PutAlbumDescription,
-} from 'src/swagger/album';
+} from './swagger';
 import { Album } from './entity/album';
 import { CreateAlbumDto } from './dto/create-album';
 import { UpdateAlbumDto } from './dto/update-album';

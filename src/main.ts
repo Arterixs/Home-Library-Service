@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { ConfigService } from '@nestjs/config';
 import { DEFAULT_PORT } from './constants/const';
-import { ConfigSwagger } from './swagger/config';
+import { ConfigSwagger } from './config/swagger';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {

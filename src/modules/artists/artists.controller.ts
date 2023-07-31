@@ -20,7 +20,7 @@ import {
   GetArtistByIdDescription,
   PostArtistDescription,
   PutArtistDescription,
-} from 'src/swagger/artist';
+} from './swagger';
 import { Artist } from './entity/artist';
 import { CreateArtistDto } from './dto/create-artist';
 import { UpdateArtistDto } from './dto/update-artist';
