@@ -1,10 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { AlbumsDBService } from 'src/modules/albums/albums-db.service';
-import { Album, CreateAlbumDto, UpdateAlbumDto } from './albums.validation';
+import { AlbumsDBService } from 'src/modules/albums/db/albums-db.service';
 import { v4 as uuidv4 } from 'uuid';
-import { TracksDBService } from 'src/modules/tracks/tracks-db.service';
-import { FavoritesDBService } from 'src/modules/favorites/favorites-db.service';
+import { TracksDBService } from 'src/modules/tracks/db/tracks-db.service';
+import { FavoritesDBService } from 'src/modules/favorites/db/favorites-db.service';
 import { ALBUM_NOT_FOUND } from 'src/constants/const';
+import { Album } from './entity/album';
+import { CreateAlbumDto } from './dto/create-album';
+import { UpdateAlbumDto } from './dto/update-album';
 
 @Injectable()
 export class AlbumsService {

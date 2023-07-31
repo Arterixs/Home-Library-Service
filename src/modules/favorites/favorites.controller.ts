@@ -11,7 +11,6 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { FavoritesService } from './favorites.service';
-import { FavoritesResponse } from './favorites.validation';
 import {
   ALBUM_PARAM,
   ALBUM_PATH,
@@ -31,6 +30,7 @@ import {
   PostArtistFavsDescription,
   PostTrackFavsDescription,
 } from 'src/swagger/favorites';
+import { FavoritesResponse } from './types/response';
 
 @ApiTags('Favs')
 @Controller(FAVS_PATH)

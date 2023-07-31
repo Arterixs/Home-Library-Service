@@ -1,6 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { Artist } from 'src/modules/artists/artists.validation';
+import { Artist } from 'src/modules/artists/entity/artist';
 
 export function GetAllArtistDescription() {
   return applyDecorators(

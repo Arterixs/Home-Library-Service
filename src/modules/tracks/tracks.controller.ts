@@ -12,7 +12,6 @@ import {
   Put,
 } from '@nestjs/common';
 import { TracksService } from './tracks.service';
-import { CreateTrackDto, Track, UpdateTrackDto } from './tracks.validation';
 import { TRACK_PARAM, TRACK_PATH } from 'src/constants/const';
 import { ApiTags } from '@nestjs/swagger';
 import {
@@ -22,6 +21,9 @@ import {
   PostTrackDescription,
   PutTrackDescription,
 } from 'src/swagger/track';
+import { Track } from './entity/track';
+import { CreateTrackDto } from './dto/create-track';
+import { UpdateTrackDto } from './dto/update-track';
 
 @ApiTags('Track')
 @Controller(TRACK_PATH)

@@ -6,7 +6,7 @@ import {
   ApiOperation,
   ApiParam,
 } from '@nestjs/swagger';
-import { User } from 'src/modules/user/user.validation';
+import { User } from 'src/modules/user/entity/user';
 
 export function GetUserByIdDescription() {
   return applyDecorators(

@@ -6,7 +6,7 @@ import {
   ApiOperation,
   ApiParam,
 } from '@nestjs/swagger';
-import { Album } from 'src/modules/albums/albums.validation';
+import { Album } from 'src/modules/albums/entity/album';
 
 export function GetAlbumByIdDescription() {
   return applyDecorators(

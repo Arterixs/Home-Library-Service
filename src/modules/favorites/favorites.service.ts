@@ -1,9 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { FavoritesDBService } from './favorites-db.service';
-import { FavoritesResponse } from './favorites.validation';
-import { TracksDBService } from 'src/modules/tracks/tracks-db.service';
-import { AlbumsDBService } from 'src/modules/albums/albums-db.service';
-import { ArtistsDBService } from 'src/modules/artists/artists-db.service';
+import { FavoritesDBService } from './db/favorites-db.service';
+import { TracksDBService } from 'src/modules/tracks/db/tracks-db.service';
+import { AlbumsDBService } from 'src/modules/albums/db/albums-db.service';
+import { ArtistsDBService } from 'src/modules/artists/db/artists-db.service';
 import {
   ALBUM_FAVS_NOT_FOUND,
   ALBUM_NOT_FOUND,
@@ -12,6 +11,7 @@ import {
   TRACK_FAVS_NOT_FOUND,
   TRACK_NOT_FOUND,
 } from 'src/constants/const';
+import { FavoritesResponse } from './types/response';
 
 @Injectable()
 export class FavoritesService {

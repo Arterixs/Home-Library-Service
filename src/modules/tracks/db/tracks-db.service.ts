@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Track } from 'src/modules/tracks/tracks.validation';
+import { Track } from '../entity/track';
 
 @Injectable()
 export class TracksDBService {

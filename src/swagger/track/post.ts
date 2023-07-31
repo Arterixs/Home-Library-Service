@@ -4,7 +4,7 @@ import {
   ApiCreatedResponse,
   ApiOperation,
 } from '@nestjs/swagger';
-import { Track } from 'src/modules/tracks/tracks.validation';
+import { Track } from 'src/modules/tracks/entity/track';
 
 export function PostTrackDescription() {
   return applyDecorators(

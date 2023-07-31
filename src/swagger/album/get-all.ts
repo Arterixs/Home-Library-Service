@@ -1,6 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { Album } from 'src/modules/albums/albums.validation';
+import { Album } from 'src/modules/albums/entity/album';
 
 export function GetAllAlbumsDescription() {
   return applyDecorators(

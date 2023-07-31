@@ -1,12 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateUserDto, UpdateUserDto, User } from './user.validation';
 import { v4 as uuidv4 } from 'uuid';
-import { UsersDBService } from 'src/modules/user/users-db.service';
+import { UsersDBService } from 'src/modules/user/db/users-db.service';
 import {
   INCREMENT_COUNT,
   PASSWORD_FORBIDDEN,
   USER_NOT_FOUND,
 } from 'src/constants/const';
+import { CreateUserDto } from './dto/create-dto';
+import { User } from './entity/user';
+import { UpdateUserDto } from './dto/update-dto';
 
 @Injectable()
 export class UserService {

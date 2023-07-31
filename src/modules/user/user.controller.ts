@@ -15,7 +15,6 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto, UpdateUserDto, User } from './user.validation';
 import { USER_PARAM, USER_PATH } from 'src/constants/const';
 import { ApiTags } from '@nestjs/swagger';
 import {
@@ -25,6 +24,9 @@ import {
   PutUserDescription,
 } from 'src/swagger/user';
 import { GetAllUsersDescription } from 'src/swagger/get-all-user';
+import { User } from './entity/user';
+import { CreateUserDto } from './dto/create-dto';
+import { UpdateUserDto } from './dto/update-dto';
 
 @ApiTags('User')
 @UseInterceptors(ClassSerializerInterceptor)

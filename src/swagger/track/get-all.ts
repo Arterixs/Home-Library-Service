@@ -1,6 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { Track } from 'src/modules/tracks/tracks.validation';
+import { Track } from 'src/modules/tracks/entity/track';
 
 export function GetAllTracksDescription() {
   return applyDecorators(

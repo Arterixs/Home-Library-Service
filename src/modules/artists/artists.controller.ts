@@ -12,7 +12,6 @@ import {
   Put,
 } from '@nestjs/common';
 import { ArtistsService } from './artists.service';
-import { Artist, CreateArtistDto, UpdateArtistDto } from './artists.validation';
 import { ARTIST_PARAM, ARTIST_PATH } from 'src/constants/const';
 import { ApiTags } from '@nestjs/swagger';
 import {
@@ -22,6 +21,9 @@ import {
   PostArtistDescription,
   PutArtistDescription,
 } from 'src/swagger/artist';
+import { Artist } from './entity/artist';
+import { CreateArtistDto } from './dto/create-artist';
+import { UpdateArtistDto } from './dto/update-artist';
 
 @ApiTags('Artist')
 @Controller(ARTIST_PATH)

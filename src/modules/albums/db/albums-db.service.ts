@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Album } from 'src/modules/albums/albums.validation';
+import { Album } from '../entity/album';
 
 @Injectable()
 export class AlbumsDBService {

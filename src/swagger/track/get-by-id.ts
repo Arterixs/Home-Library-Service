@@ -6,7 +6,7 @@ import {
   ApiOperation,
   ApiParam,
 } from '@nestjs/swagger';
-import { Track } from 'src/modules/tracks/tracks.validation';
+import { Track } from 'src/modules/tracks/entity/track';
 
 export function GetTrackByIdDescription() {
   return applyDecorators(

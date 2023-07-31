@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Artist } from 'src/modules/artists/artists.validation';
+import { Artist } from '../entity/artist';
 
 @Injectable()
 export class ArtistsDBService {

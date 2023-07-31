@@ -1,6 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { User } from 'src/modules/user/user.validation';
+import { User } from 'src/modules/user/entity/user';
 
 export function GetAllUsersDescription() {
   return applyDecorators(

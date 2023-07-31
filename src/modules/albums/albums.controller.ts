@@ -12,7 +12,6 @@ import {
   Put,
 } from '@nestjs/common';
 import { AlbumsService } from './albums.service';
-import { Album, CreateAlbumDto, UpdateAlbumDto } from './albums.validation';
 import { ALBUM_PARAM, ALBUM_PATH } from 'src/constants/const';
 import { ApiTags } from '@nestjs/swagger';
 import {
@@ -22,6 +21,9 @@ import {
   PostAlbumDescription,
   PutAlbumDescription,
 } from 'src/swagger/album';
+import { Album } from './entity/album';
+import { CreateAlbumDto } from './dto/create-album';
+import { UpdateAlbumDto } from './dto/update-album';
 
 @ApiTags('Album')
 @Controller(ALBUM_PATH)

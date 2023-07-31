@@ -4,7 +4,7 @@ import {
   ApiCreatedResponse,
   ApiOperation,
 } from '@nestjs/swagger';
-import { User } from 'src/modules/user/user.validation';
+import { User } from 'src/modules/user/entity/user';
 
 export function PostUserDescription() {
   return applyDecorators(
