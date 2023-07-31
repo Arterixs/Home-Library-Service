@@ -7,6 +7,7 @@ import {
   ValidateIf,
 } from 'class-validator';
 import { Track } from '../entity/track';
+import { FORMAT_UUID } from 'src/constants/const';
 
 export class UpdateTrackDto {
   @ApiProperty({ example: 'Toca Toca' })
@@ -19,7 +20,7 @@ export class UpdateTrackDto {
     nullable: true,
   })
   @ValidateIf((track: Track) => track.artistId !== null)
-  @IsUUID(4)
+  @IsUUID(FORMAT_UUID)
   @IsNotEmpty()
   artistId: string | null;
 
@@ -28,7 +29,7 @@ export class UpdateTrackDto {
     nullable: true,
   })
   @ValidateIf((track: Track) => track.albumId !== null)
-  @IsUUID(4)
+  @IsUUID(FORMAT_UUID)
   @IsNotEmpty()
   albumId: string | null;
 
