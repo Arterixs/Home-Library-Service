@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  app:
+    container_name: app
+    build:
+      context: .
+      target: dev
+    restart: always
+    volumes:
+      - ./src:/app/src
+    ports:
+      - ${PORT}:${PORT}
+    command: npm run start:dev
+    env_file:
+      - .env
+    networks:
+      - my-network
+    # depends_on:
+    #   - postgres
+networks:
+  my-network:
+    driver: bridge
+    name: my-network
+volumes:
+  pgdata:
