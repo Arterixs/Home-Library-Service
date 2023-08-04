@@ -6,6 +6,7 @@ import {
   ForbiddenException,
   Get,
   HttpCode,
+  HttpException,
   HttpStatus,
   NotFoundException,
   Param,
@@ -15,7 +16,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { USER_PARAM, USER_PATH } from 'src/constants/const';
+import { USER_NOT_FOUND, USER_PARAM, USER_PATH } from 'src/constants/const';
 import { ApiTags } from '@nestjs/swagger';
 import { User } from './entity/user';
 import { CreateUserDto } from './dto/create-dto';
@@ -36,15 +37,19 @@ export class UserController {
 
   @Get()
   @GetAllUsersDescription()
-  getUsers(): User[] {
-    return this.userService.getUsers();
+  async getUsers(): Promise<User[]> {
+    return await this.userService.getUsers();
   }
 
   @Get(`:${USER_PARAM}`)
   @GetUserByIdDescription()
-  getUser(@Param(USER_PARAM, ParseUUIDPipe) id: string) {
+  async getUser(@Param(USER_PARAM, ParseUUIDPipe) id: string) {
     try {
-      return this.userService.getUserById(id);
+      const user = await this.userService.getUserById(id);
+      if (!user) {
+        throw new HttpException(USER_NOT_FOUND, HttpStatus.NOT_FOUND);
+      }
+      return user;
     } catch (err) {
       if (err.status === HttpStatus.NOT_FOUND) {
         throw new NotFoundException(err.message);
@@ -54,7 +59,7 @@ export class UserController {
 
   @Post()
   @PostUserDescription()
-  createUser(@Body() user: CreateUserDto): User {
+  createUser(@Body() user: CreateUserDto): Promise<void | User> {
     return this.userService.setUser(user);
   }
 

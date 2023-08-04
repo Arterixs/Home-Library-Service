@@ -9,18 +9,30 @@ import {
 import { CreateUserDto } from './dto/create-dto';
 import { User } from './entity/user';
 import { UpdateUserDto } from './dto/update-dto';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly dataBase: UsersDBService) {}
+  constructor(
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
+    private readonly dataBase: UsersDBService,
+  ) {}
 
-  getUsers(): User[] {
-    return this.dataBase.getAll();
+  async getUsers(): Promise<User[]> {
+    const arg = await this.usersRepository.find();
+    console.log(arg, 'Helllo');
+    return arg;
+    // return this.dataBase.getAll();
   }
 
-  setUser(user: CreateUserDto) {
+  async setUser(user: CreateUserDto) {
     const fullUser = this.createUser(user);
-    this.dataBase.create(new User(fullUser));
+    // this.dataBase.create(new User(fullUser));
+    const createdUser = await this.usersRepository.create(new User(fullUser));
+    return createdUser;
+    return await this.usersRepository.save(createdUser);
     return this.takeUserById(fullUser.id);
   }
 
@@ -28,14 +40,16 @@ export class UserService {
     return this.dataBase.getById(id);
   }
 
-  getUserById(id: string) {
-    this.checkUserById(id);
-    return this.takeUserById(id);
+  async getUserById(id: string): Promise<User | null> {
+    // this.checkUserById(id);
+    return await this.usersRepository.findOneBy({ id });
+    // return this.takeUserById(id);
   }
 
-  removeUser(id: string) {
-    this.checkUserById(id);
-    this.dataBase.delete(id);
+  async removeUser(id: string) {
+    // this.checkUserById(id);
+    await this.usersRepository.delete(id);
+    // this.dataBase.delete(id);
   }
 
   checkUserById(id: string) {
@@ -45,12 +59,13 @@ export class UserService {
     }
   }
 
-  changeUserById(id: string, data: UpdateUserDto) {
+  async changeUserById(id: string, data: UpdateUserDto) {
     this.checkUserById(id);
-    const user = this.takeUserById(id);
+    const user = await this.getUserById(id);
     this.checkPasswordUser(user.password, data.oldPassword);
     const updateUser = this.changeUser(user, data.newPassword);
     this.dataBase.create(new User(updateUser));
+    return await this.usersRepository.save(new User(updateUser));
     return this.takeUserById(updateUser.id);
   }
 
