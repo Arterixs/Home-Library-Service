@@ -1,6 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+  VersionColumn,
+} from 'typeorm';
 
 @Entity('User')
 export class User {
@@ -13,16 +20,26 @@ export class User {
   login: string;
 
   @ApiProperty({ example: 1 })
-  @Column({ type: 'int' })
+  @VersionColumn({ type: 'int' })
   version: number;
 
   @ApiProperty({ example: 1655000000 })
-  @Column({ type: 'timestamp' })
-  createdAt: number;
+  @CreateDateColumn({
+    transformer: {
+      to: () => new Date(Date.now()),
+      from: (value: Date) => value.getTime(),
+    },
+  })
+  createdAt: Date;
 
   @ApiProperty({ example: 1655000000 })
-  @Column({ type: 'timestamp' })
-  updatedAt: number;
+  @UpdateDateColumn({
+    transformer: {
+      to: () => new Date(Date.now()),
+      from: (value: Date) => value.getTime(),
+    },
+  })
+  updatedAt: Date;
 
   @Exclude()
   @Column({ type: 'text' })

@@ -12,7 +12,6 @@ export const ARTIST_PARAM = 'artistId';
 export const USER_PARAM = 'userId';
 
 export const FORMAT_UUID = 4;
-export const INCREMENT_COUNT = 1;
 
 export const TRACK_NOT_FOUND = 'Track is not exist';
 export const ARTIST_NOT_FOUND = 'Artist is not exist';

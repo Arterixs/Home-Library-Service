@@ -22,7 +22,7 @@ import { User } from '../user/entity/user';
         database: config.get('POSTGRES_DB'),
         port: config.get('POSTGRES_PORT'),
         entities: [User],
-        synchronize: true,
+        synchronize: false,
       }),
     }),
   ],

@@ -44,17 +44,11 @@ export class UserController {
   @Get(`:${USER_PARAM}`)
   @GetUserByIdDescription()
   async getUser(@Param(USER_PARAM, ParseUUIDPipe) id: string) {
-    try {
-      const user = await this.userService.getUserById(id);
-      if (!user) {
-        throw new HttpException(USER_NOT_FOUND, HttpStatus.NOT_FOUND);
-      }
-      return user;
-    } catch (err) {
-      if (err.status === HttpStatus.NOT_FOUND) {
-        throw new NotFoundException(err.message);
-      }
+    const user = await this.userService.getUserById(id);
+    if (!user) {
+      throw new HttpException(USER_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
+    return user;
   }
 
   @Post()
@@ -65,12 +59,13 @@ export class UserController {
 
   @Put(`:${USER_PARAM}`)
   @PutUserDescription()
-  changeUser(
+  async changeUser(
     @Param(USER_PARAM, ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
     try {
-      return this.userService.changeUserById(id, updateUserDto);
+      const result = await this.userService.changeUserById(id, updateUserDto);
+      return result;
     } catch (err) {
       if (err.status === HttpStatus.FORBIDDEN) {
         throw new ForbiddenException(err.message);
@@ -84,13 +79,11 @@ export class UserController {
   @Delete(`:${USER_PARAM}`)
   @DeleteUserDescription()
   @HttpCode(HttpStatus.NO_CONTENT)
-  removeUser(@Param(USER_PARAM, ParseUUIDPipe) id: string) {
-    try {
-      return this.userService.removeUser(id);
-    } catch (err) {
-      if (err.status === HttpStatus.NOT_FOUND) {
-        throw new NotFoundException(err.message);
-      }
+  async removeUser(@Param(USER_PARAM, ParseUUIDPipe) id: string) {
+    const result = await this.userService.removeUser(id);
+    if (!result.affected) {
+      throw new HttpException(USER_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
+    return result;
   }
 }
