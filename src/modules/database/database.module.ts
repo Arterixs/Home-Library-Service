@@ -6,10 +6,6 @@ import { TracksDBService } from '../tracks/db/tracks-db.service';
 import { FavoritesDBService } from 'src/modules/favorites/db/favorites-db.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { User } from '../user/entity/user';
-import { Album } from '../albums/entity/album';
-import { Artist } from '../artists/entity/artist';
-import { Track } from '../tracks/entity/track';
 
 @Global()
 @Module({
@@ -24,7 +20,7 @@ import { Track } from '../tracks/entity/track';
         password: config.get('POSTGRES_PASSWORD'),
         database: config.get('POSTGRES_DB'),
         port: config.get('POSTGRES_PORT'),
-        entities: [User, Album, Artist, Track],
+        autoLoadEntities: true,
         synchronize: false,
       }),
     }),

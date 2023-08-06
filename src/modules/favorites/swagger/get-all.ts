@@ -1,6 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
-import { Favorites } from 'src/modules/favorites/entity/favorites';
+import { Favorites } from 'src/modules/favorites/entityss/favorites';
 
 export function GetAllFavsDescription() {
   return applyDecorators(

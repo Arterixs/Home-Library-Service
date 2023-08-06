@@ -14,14 +14,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class AlbumsService {
   constructor(
     @InjectRepository(Album)
-    private usersRepository: Repository<Album>,
+    private albumRepository: Repository<Album>,
     private readonly dataBase: AlbumsDBService,
     private readonly dataBaseTrack: TracksDBService,
     private readonly dataBaseFavs: FavoritesDBService,
   ) {}
 
-  getAlbums(): Album[] {
-    return this.dataBase.getAlbums();
+  async getAlbums(): Promise<Album[]> {
+    return await this.albumRepository.find();
+    // return this.dataBase.getAlbums();
   }
 
   getAlbumBuId(id: string) {
@@ -29,10 +30,12 @@ export class AlbumsService {
     return this.takeAlbum(id);
   }
 
-  setAlbum(album: CreateAlbumDto) {
-    const fullAlbum = this.createFullAlbum(album);
-    this.addAlbumInDB(fullAlbum);
-    return this.takeAlbum(fullAlbum.id);
+  async setAlbum(album: CreateAlbumDto) {
+    // const fullAlbum = this.createFullAlbum(album);
+    // this.addAlbumInDB(fullAlbum);
+    // return this.takeAlbum(fullAlbum.id);
+    const albumEntity = this.albumRepository.create(album);
+    return await this.albumRepository.save(albumEntity);
   }
 
   checkAlbumId(id: string) {

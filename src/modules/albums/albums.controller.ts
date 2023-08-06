@@ -32,8 +32,8 @@ export class AlbumsController {
 
   @Get()
   @GetAllAlbumsDescription()
-  getAll(): Album[] {
-    return this.albumsService.getAlbums();
+  async getAll(): Promise<Album[]> {
+    return await this.albumsService.getAlbums();
   }
 
   @Get(`:${ALBUM_PARAM}`)
@@ -50,7 +50,7 @@ export class AlbumsController {
 
   @Post()
   @PostAlbumDescription()
-  create(@Body() album: CreateAlbumDto): Album {
+  create(@Body() album: CreateAlbumDto): Promise<void | Album> {
     return this.albumsService.setAlbum(album);
   }
 
