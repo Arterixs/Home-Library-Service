@@ -8,10 +8,14 @@ import { ARTIST_NOT_FOUND } from 'src/constants/const';
 import { Artist } from './entity/artist';
 import { CreateArtistDto } from './dto/create-artist';
 import { UpdateArtistDto } from './dto/update-artist';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ArtistsService {
   constructor(
+    @InjectRepository(Artist)
+    private usersRepository: Repository<Artist>,
     private readonly dataBase: ArtistsDBService,
     private readonly dataBaseAlbum: AlbumsDBService,
     private readonly dataBaseTrack: TracksDBService,

@@ -6,10 +6,14 @@ import { TRACK_NOT_FOUND } from 'src/constants/const';
 import { Track } from './entity/track';
 import { CreateTrackDto } from './dto/create-track';
 import { UpdateTrackDto } from './dto/update-track';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class TracksService {
   constructor(
+    @InjectRepository(Track)
+    private usersRepository: Repository<Track>,
     private readonly dataBase: TracksDBService,
     private readonly dataBaseFavorites: FavoritesDBService,
   ) {}

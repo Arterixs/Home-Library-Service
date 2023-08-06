@@ -7,10 +7,14 @@ import { ALBUM_NOT_FOUND } from 'src/constants/const';
 import { Album } from './entity/album';
 import { CreateAlbumDto } from './dto/create-album';
 import { UpdateAlbumDto } from './dto/update-album';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class AlbumsService {
   constructor(
+    @InjectRepository(Album)
+    private usersRepository: Repository<Album>,
     private readonly dataBase: AlbumsDBService,
     private readonly dataBaseTrack: TracksDBService,
     private readonly dataBaseFavs: FavoritesDBService,

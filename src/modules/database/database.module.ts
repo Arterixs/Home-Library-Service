@@ -7,6 +7,9 @@ import { FavoritesDBService } from 'src/modules/favorites/db/favorites-db.servic
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { User } from '../user/entity/user';
+import { Album } from '../albums/entity/album';
+import { Artist } from '../artists/entity/artist';
+import { Track } from '../tracks/entity/track';
 
 @Global()
 @Module({
@@ -21,7 +24,7 @@ import { User } from '../user/entity/user';
         password: config.get('POSTGRES_PASSWORD'),
         database: config.get('POSTGRES_DB'),
         port: config.get('POSTGRES_PORT'),
-        entities: [User],
+        entities: [User, Album, Artist, Track],
         synchronize: false,
       }),
     }),
