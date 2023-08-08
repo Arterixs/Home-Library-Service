@@ -13,55 +13,38 @@ import { Repository } from 'typeorm';
 export class TracksService {
   constructor(
     @InjectRepository(Track)
-    private usersRepository: Repository<Track>,
+    private tracksRepository: Repository<Track>,
     private readonly dataBase: TracksDBService,
     private readonly dataBaseFavorites: FavoritesDBService,
   ) {}
 
-  getTracks(): Track[] {
-    return this.dataBase.getAll();
+  async getTracks() {
+    return this.tracksRepository.find();
   }
 
-  getTrackBuId(id: string) {
-    this.checkTrack(id);
-    return this.takeTrack(id);
+  async getTrackById(id: string) {
+    return await this.tracksRepository.findOne({
+      where: { id },
+    });
   }
 
-  setTrack(album: CreateTrackDto) {
-    const fullAlbum = this.createFullTrack(album);
-    this.addTrackInDB(fullAlbum);
-    return this.takeTrack(fullAlbum.id);
+  async setTrack(track: CreateTrackDto) {
+    const updateTrack = this.tracksRepository.create(track);
+    return await this.tracksRepository.save(updateTrack);
   }
 
-  checkTrack(id: string) {
-    const isTrack = this.dataBase.checkTracks(id);
-    if (!isTrack) {
-      throw new HttpException(TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
-    }
+  async checkTrackId(id: string) {
+    return await this.tracksRepository.exist({
+      where: { id },
+    });
   }
 
-  takeTrack(id: string) {
-    return this.dataBase.getById(id);
-  }
-
-  addTrackInDB(album: Track) {
-    this.dataBase.create(album);
-  }
-
-  createFullTrack(album: CreateTrackDto) {
-    return { ...album, id: uuidv4() };
-  }
-
-  updateTrack(nextAlbum: UpdateTrackDto, prevAlbum: Track) {
-    return { ...prevAlbum, ...nextAlbum };
-  }
-
-  changeArtist(nextAlbum: UpdateTrackDto, id: string) {
-    this.checkTrack(id);
-    const prevAlbum = this.takeTrack(id);
-    const updateAlbum = this.updateTrack(nextAlbum, prevAlbum);
-    this.addTrackInDB(updateAlbum);
-    return this.takeTrack(id);
+  async changeTrack(updateTrack: UpdateTrackDto, id: string) {
+    const resultChekId = await this.checkTrackId(id);
+    if (!resultChekId) return resultChekId;
+    const updateAlbum = this.tracksRepository.create(updateTrack);
+    await this.tracksRepository.update({ id }, updateAlbum);
+    return await this.getTrackById(id);
   }
 
   deleteTrack(id: string) {
@@ -72,9 +55,9 @@ export class TracksService {
     this.dataBaseFavorites.deleteTrack(id);
   }
 
-  removeTrack(id: string) {
-    this.checkTrack(id);
-    this.deleteTrack(id);
-    this.deleteTrackFavs(id);
+  async removeTrack(id: string) {
+    return await this.tracksRepository.delete(id);
+    // this.deleteTrack(id);
+    // this.deleteTrackFavs(id);
   }
 }

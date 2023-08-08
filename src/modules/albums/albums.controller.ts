@@ -6,7 +6,6 @@ import {
   HttpCode,
   HttpException,
   HttpStatus,
-  NotFoundException,
   Param,
   ParseUUIDPipe,
   Post,
@@ -41,16 +40,14 @@ export class AlbumsController {
   @GetAlbumByIdDescription()
   async getById(@Param(ALBUM_PARAM, ParseUUIDPipe) id: string) {
     const result = await this.albumsService.getAlbumBuId(id);
-    if (result) {
-      return result;
-    }
+    if (result) return result;
     throw new HttpException(ALBUM_NOT_FOUND, HttpStatus.NOT_FOUND);
   }
 
   @Post()
   @PostAlbumDescription()
-  create(@Body() album: CreateAlbumDto): Promise<void | Album> {
-    return this.albumsService.setAlbum(album);
+  async create(@Body() album: CreateAlbumDto): Promise<void | Album> {
+    return await this.albumsService.setAlbum(album);
   }
 
   @Put(`:${ALBUM_PARAM}`)
@@ -71,9 +68,7 @@ export class AlbumsController {
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param(ALBUM_PARAM, ParseUUIDPipe) id: string) {
     const result = await this.albumsService.removeAlbum(id);
-    if (!result.affected) {
-      throw new HttpException(ALBUM_NOT_FOUND, HttpStatus.NOT_FOUND);
-    }
-    return result;
+    if (result.affected) return result;
+    throw new HttpException(ALBUM_NOT_FOUND, HttpStatus.NOT_FOUND);
   }
 }
