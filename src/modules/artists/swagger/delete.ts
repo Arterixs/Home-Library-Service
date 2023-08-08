@@ -24,7 +24,7 @@ export function DeleteArtistDescription() {
       description: 'Bad request. artistId is invalid (not uuid)',
     }),
     ApiNotFoundResponse({
-      description: 'Artist was not found.',
+      description: 'Artist is not found.',
     }),
   );
 }

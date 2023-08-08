@@ -7,11 +7,11 @@ export class Artist {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ApiProperty({ example: 'JoJo' })
+  @ApiProperty({ example: 'LoLo' })
   @Column({ type: 'text' })
   name: string;
 
-  @ApiProperty({ example: true })
+  @ApiProperty({ example: false })
   @Column({ type: 'boolean' })
   grammy: boolean;
 

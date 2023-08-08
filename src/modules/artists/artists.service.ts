@@ -15,69 +15,49 @@ import { Repository } from 'typeorm';
 export class ArtistsService {
   constructor(
     @InjectRepository(Artist)
-    private usersRepository: Repository<Artist>,
+    private artistRepository: Repository<Artist>,
     private readonly dataBase: ArtistsDBService,
     private readonly dataBaseAlbum: AlbumsDBService,
     private readonly dataBaseTrack: TracksDBService,
     private readonly dataBaseFavs: FavoritesDBService,
   ) {}
 
-  getArtists(): Artist[] {
-    return this.dataBase.getAll();
+  async getArtists() {
+    return await this.artistRepository.find();
   }
 
-  getArtistBuId(id: string) {
-    this.checkArtist(id);
-    return this.takeArtist(id);
+  async getArtistById(id: string) {
+    return await this.artistRepository.findOne({
+      where: { id },
+    });
   }
 
-  setArtist(album: CreateArtistDto) {
-    const fullAlbum = this.createFullArtist(album);
-    this.addAlbumInDB(fullAlbum);
-    return this.takeArtist(fullAlbum.id);
+  async setArtist(album: CreateArtistDto) {
+    const fullAlbum = this.artistRepository.create(album);
+    return await this.artistRepository.save(fullAlbum);
   }
 
-  checkArtist(id: string) {
-    const isArtist = this.dataBase.checkArtist(id);
-    if (!isArtist) {
-      throw new HttpException(ARTIST_NOT_FOUND, HttpStatus.NOT_FOUND);
-    }
+  async checkArtist(id: string) {
+    return await this.artistRepository.exist({
+      where: { id },
+    });
   }
 
-  takeArtist(id: string) {
-    return this.dataBase.getById(id);
+  async changeArtist(changeAlbum: UpdateArtistDto, id: string) {
+    const resultChekId = await this.checkArtist(id);
+    if (!resultChekId) return resultChekId;
+    const updateArtist = this.artistRepository.create(changeAlbum);
+    await this.artistRepository.update({ id }, updateArtist);
+    return await this.getArtistById(id);
   }
 
-  addAlbumInDB(album: Artist) {
-    this.dataBase.create(album);
-  }
-
-  createFullArtist(album: CreateArtistDto) {
-    return { ...album, id: uuidv4() };
-  }
-
-  updateArtist(nextAlbum: UpdateArtistDto, prevAlbum: Artist) {
-    return { ...prevAlbum, ...nextAlbum };
-  }
-
-  changeArtist(nextAlbum: UpdateArtistDto, id: string) {
-    this.checkArtist(id);
-    const prevAlbum = this.takeArtist(id);
-    const updateAlbum = this.updateArtist(nextAlbum, prevAlbum);
-    this.addAlbumInDB(updateAlbum);
-    return this.takeArtist(id);
-  }
-
-  deleteArtist(id: string) {
-    this.dataBase.delete(id);
-  }
-
-  removeArtist(id: string) {
-    this.checkArtist(id);
-    this.deleteArtist(id);
-    this.deleteArtistByIdAlbumDB(id);
-    this.deleteArtistByIdTrackDB(id);
-    this.deleteArtistByIdFavsDB(id);
+  async removeArtist(id: string) {
+    return await this.artistRepository.delete(id);
+    // this.checkArtist(id);
+    // this.deleteArtist(id);
+    // this.deleteArtistByIdAlbumDB(id);
+    // this.deleteArtistByIdTrackDB(id);
+    // this.deleteArtistByIdFavsDB(id);
   }
 
   deleteArtistByIdAlbumDB(id: string) {
