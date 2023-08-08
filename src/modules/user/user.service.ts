@@ -1,5 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PASSWORD_FORBIDDEN, USER_NOT_FOUND } from 'src/constants/const';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-dto';
 import { User } from './entity/user';
 import { UpdateUserDto } from './dto/update-dto';
@@ -23,32 +22,17 @@ export class UserService {
   }
 
   async getUserById(id: string): Promise<User | null> {
-    const result = await this.usersRepository.findOne({
+    return await this.usersRepository.findOne({
       where: { id },
     });
-    if (result) {
-      return result;
-    }
-    throw new HttpException(USER_NOT_FOUND, HttpStatus.NOT_FOUND);
-  }
-
-  async removeUser(id: string) {
-    return await this.usersRepository.delete(id);
-  }
-
-  checkUserById(id: string) {
-    const isUser = this.usersRepository.find({
-      where: { id },
-    });
-    if (!isUser) {
-      throw new HttpException(USER_NOT_FOUND, HttpStatus.NOT_FOUND);
-    }
   }
 
   async changeUserById(id: string, data: UpdateUserDto) {
     const { newPassword, oldPassword } = data;
-    const { password } = await this.getUserById(id);
-    this.checkPasswordUser(password, oldPassword);
+    const user = await this.getUserById(id);
+    if (!user) return user;
+    const checkPassword = this.checkPasswordUser(user.password, oldPassword);
+    if (!checkPassword) return checkPassword;
     await this.usersRepository.update(id, {
       password: newPassword,
     });
@@ -56,9 +40,10 @@ export class UserService {
   }
 
   checkPasswordUser(currentPassword: string, oldPassword: string) {
-    const isEqualPassword = currentPassword === oldPassword;
-    if (!isEqualPassword) {
-      throw new HttpException(PASSWORD_FORBIDDEN, HttpStatus.FORBIDDEN);
-    }
+    return currentPassword === oldPassword;
+  }
+
+  async removeUser(id: string) {
+    return await this.usersRepository.delete(id);
   }
 }
