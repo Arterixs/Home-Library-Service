@@ -24,13 +24,17 @@ export class Track {
     nullable: true,
   })
   @Column({ type: 'text', nullable: true })
-  @OneToOne(() => Artist, (artist) => artist.id, { onDelete: 'SET NULL' })
+  @OneToOne(() => Artist, (artist) => artist.id, {
+    onDelete: 'SET NULL',
+  })
   @JoinColumn({ name: 'artistId', referencedColumnName: 'id' })
   artistId: string | null;
 
   @ApiProperty({ example: null, nullable: true })
   @Column({ type: 'text', nullable: true })
-  @OneToOne(() => Album, (album) => album.id, { onDelete: 'SET NULL' })
+  @OneToOne(() => Album, (album) => album.id, {
+    onDelete: 'SET NULL',
+  })
   @JoinColumn({ name: 'albumId', referencedColumnName: 'id' })
   albumId: string | null;
 

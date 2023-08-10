@@ -6,7 +6,6 @@ import {
   HttpCode,
   HttpException,
   HttpStatus,
-  NotFoundException,
   Param,
   ParseUUIDPipe,
   Post,
@@ -22,7 +21,6 @@ import {
   PostTrackDescription,
   PutTrackDescription,
 } from './swagger';
-import { Track } from './entity/track';
 import { CreateTrackDto } from './dto/create-track';
 import { UpdateTrackDto } from './dto/update-track';
 

@@ -4,6 +4,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -27,7 +28,7 @@ export class Album {
     nullable: true,
   })
   @Column({ type: 'text', nullable: true })
-  @OneToOne(() => Artist, (artist) => artist.id, { onDelete: 'SET NULL' })
+  @ManyToOne(() => Artist, (artist) => artist.id, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'artistId', referencedColumnName: 'id' })
   artistId: string | null;
 

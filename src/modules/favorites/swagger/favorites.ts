@@ -5,11 +5,11 @@ import { Track } from 'src/modules/tracks/entity/track';
 
 export class Favorites {
   @ApiProperty({ type: [Artist] })
-  artistId: string[];
+  artists: string[];
 
   @ApiProperty({ type: [Album] })
-  albumId: string[];
+  albums: string[];
 
   @ApiProperty({ type: [Track] })
-  trackId: string[];
+  tracks: string[];
 }

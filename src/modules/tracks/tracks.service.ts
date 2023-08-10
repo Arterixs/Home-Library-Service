@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { TracksDBService } from 'src/modules/tracks/db/tracks-db.service';
-import { FavoritesDBService } from 'src/modules/favorites/db/favorites-db.service';
 import { Track } from './entity/track';
 import { CreateTrackDto } from './dto/create-track';
 import { UpdateTrackDto } from './dto/update-track';
@@ -12,8 +10,6 @@ export class TracksService {
   constructor(
     @InjectRepository(Track)
     private tracksRepository: Repository<Track>,
-    private readonly dataBase: TracksDBService,
-    private readonly dataBaseFavorites: FavoritesDBService,
   ) {}
 
   async getTracks() {
@@ -45,17 +41,7 @@ export class TracksService {
     return await this.getTrackById(id);
   }
 
-  deleteTrack(id: string) {
-    this.dataBase.delete(id);
-  }
-
-  deleteTrackFavs(id: string) {
-    this.dataBaseFavorites.deleteTrack(id);
-  }
-
   async removeTrack(id: string) {
     return await this.tracksRepository.delete(id);
-    // this.deleteTrack(id);
-    // this.deleteTrackFavs(id);
   }
 }

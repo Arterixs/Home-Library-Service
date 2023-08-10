@@ -1,7 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { AlbumsDBService } from 'src/modules/albums/db/albums-db.service';
-import { TracksDBService } from 'src/modules/tracks/db/tracks-db.service';
-import { FavoritesDBService } from 'src/modules/favorites/db/favorites-db.service';
 import { Album } from './entity/album';
 import { CreateAlbumDto } from './dto/create-album';
 import { UpdateAlbumDto } from './dto/update-album';
@@ -13,16 +10,13 @@ export class AlbumsService {
   constructor(
     @InjectRepository(Album)
     private albumRepository: Repository<Album>,
-    private readonly dataBase: AlbumsDBService,
-    private readonly dataBaseTrack: TracksDBService,
-    private readonly dataBaseFavs: FavoritesDBService,
   ) {}
 
   async getAlbums(): Promise<Album[]> {
     return await this.albumRepository.find();
   }
 
-  async getAlbumBuId(id: string) {
+  async getAlbumById(id: string) {
     return await this.albumRepository.findOne({
       where: { id },
     });
@@ -44,26 +38,10 @@ export class AlbumsService {
     if (!resultChekId) return resultChekId;
     const updateAlbum = this.albumRepository.create(nextAlbum);
     await this.albumRepository.update({ id }, updateAlbum);
-    return await this.getAlbumBuId(id);
-  }
-
-  deleteAlbum(id: string) {
-    this.dataBase.removeAlbum(id);
-  }
-
-  deleteAlbumByIdTrackDB(id: string) {
-    this.dataBaseTrack.deleteAlbumById(id);
-  }
-
-  deleteAlbumFavs(id: string) {
-    this.dataBaseFavs.deleteAlbum(id);
+    return await this.getAlbumById(id);
   }
 
   async removeAlbum(id: string) {
     return await this.albumRepository.delete(id);
-    // this.checkAlbumId(id);
-    // this.deleteAlbum(id);
-    // this.deleteAlbumByIdTrackDB(id);
-    // this.deleteAlbumFavs(id);
   }
 }

@@ -3,20 +3,22 @@ import {
   Delete,
   Get,
   HttpCode,
+  HttpException,
   HttpStatus,
-  NotFoundException,
   Param,
   ParseUUIDPipe,
   Post,
-  UnprocessableEntityException,
 } from '@nestjs/common';
 import { FavoritesService } from './favorites.service';
 import {
+  ALBUM_NOT_FOUND,
   ALBUM_PARAM,
   ALBUM_PATH,
+  ARTIST_NOT_FOUND,
   ARTIST_PARAM,
   ARTIST_PATH,
   FAVS_PATH,
+  TRACK_NOT_FOUND,
   TRACK_PARAM,
   TRACK_PATH,
 } from 'src/constants/const';
@@ -30,7 +32,6 @@ import {
   PostArtistFavsDescription,
   PostTrackFavsDescription,
 } from './swagger';
-import { FavoritesResponse } from './types/response';
 
 @ApiTags('Favs')
 @Controller(FAVS_PATH)
@@ -39,82 +40,58 @@ export class FavoritesController {
 
   @Get()
   @GetAllFavsDescription()
-  getFavs(): FavoritesResponse {
-    return this.favoritesService.getFavs();
+  async getFavs() {
+    return await this.favoritesService.getFavs();
   }
 
   @Post(`${TRACK_PATH}/:${TRACK_PARAM}`)
   @PostTrackFavsDescription()
-  addTrack(@Param(TRACK_PARAM, ParseUUIDPipe) id: string) {
-    try {
-      this.favoritesService.addTrack(id);
-    } catch (err) {
-      if (err.status === HttpStatus.UNPROCESSABLE_ENTITY) {
-        throw new UnprocessableEntityException(err.message);
-      }
-    }
+  async addTrack(@Param(TRACK_PARAM, ParseUUIDPipe) id: string) {
+    const result = await this.favoritesService.addTrack(id);
+    if (result) return;
+    throw new HttpException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   @Delete(`${TRACK_PATH}/:${TRACK_PARAM}`)
   @DeleteTrackFavsDescription()
   @HttpCode(HttpStatus.NO_CONTENT)
-  deleteTrack(@Param(TRACK_PARAM, ParseUUIDPipe) id: string) {
-    try {
-      return this.favoritesService.deleteTrack(id);
-    } catch (err) {
-      if (err.status === HttpStatus.NOT_FOUND) {
-        throw new NotFoundException(err.message);
-      }
-    }
+  async deleteTrack(@Param(TRACK_PARAM, ParseUUIDPipe) id: string) {
+    const result = await this.favoritesService.deleteTrack(id);
+    if (result.affected) return result;
+    throw new HttpException(TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
   }
 
   @Post(`${ALBUM_PATH}/:${ALBUM_PARAM}`)
   @PostAlbumFavsDescription()
-  addAlbum(@Param(ALBUM_PARAM, ParseUUIDPipe) id: string) {
-    try {
-      this.favoritesService.addAlbum(id);
-    } catch (err) {
-      if (err.status === HttpStatus.UNPROCESSABLE_ENTITY) {
-        throw new UnprocessableEntityException(err.message);
-      }
-    }
+  async addAlbum(@Param(ALBUM_PARAM, ParseUUIDPipe) id: string) {
+    const result = await this.favoritesService.addAlbum(id);
+    if (result) return;
+    throw new HttpException(ALBUM_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   @Delete(`${ALBUM_PATH}/:${ALBUM_PARAM}`)
   @DeleteAlbumFavsDescription()
   @HttpCode(HttpStatus.NO_CONTENT)
-  deleteAlbum(@Param(ALBUM_PARAM, ParseUUIDPipe) id: string) {
-    try {
-      return this.favoritesService.deleteAlbum(id);
-    } catch (err) {
-      if (err.status === HttpStatus.NOT_FOUND) {
-        throw new NotFoundException(err.message);
-      }
-    }
+  async deleteAlbum(@Param(ALBUM_PARAM, ParseUUIDPipe) id: string) {
+    const result = await this.favoritesService.deleteAlbum(id);
+    if (result.affected) return result;
+    throw new HttpException(ALBUM_NOT_FOUND, HttpStatus.NOT_FOUND);
   }
 
   @Post(`${ARTIST_PATH}/:${ARTIST_PARAM}`)
   @PostArtistFavsDescription()
-  addArtist(@Param(ARTIST_PARAM, ParseUUIDPipe) id: string) {
-    try {
-      this.favoritesService.addArtist(id);
-    } catch (err) {
-      if (err.status === HttpStatus.UNPROCESSABLE_ENTITY) {
-        throw new UnprocessableEntityException(err.message);
-      }
-    }
+  async addArtist(@Param(ARTIST_PARAM, ParseUUIDPipe) id: string) {
+    const result = await this.favoritesService.addArtist(id);
+    if (result) return;
+    throw new HttpException(ARTIST_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   @Delete(`${ARTIST_PATH}/:${ARTIST_PARAM}`)
   @DeleteArtistFavsDescription()
   @HttpCode(HttpStatus.NO_CONTENT)
-  deleteArtist(@Param(ARTIST_PARAM, ParseUUIDPipe) id: string) {
-    try {
-      return this.favoritesService.deleteArtist(id);
-    } catch (err) {
-      if (err.status === HttpStatus.NOT_FOUND) {
-        throw new NotFoundException(err.message);
-      }
-    }
+  async deleteArtist(@Param(ARTIST_PARAM, ParseUUIDPipe) id: string) {
+    const result = await this.favoritesService.deleteArtist(id);
+    if (result.affected) return result;
+    throw new HttpException(ARTIST_NOT_FOUND, HttpStatus.NOT_FOUND);
   }
 }

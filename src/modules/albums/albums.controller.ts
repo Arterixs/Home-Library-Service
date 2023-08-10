@@ -39,7 +39,7 @@ export class AlbumsController {
   @Get(`:${ALBUM_PARAM}`)
   @GetAlbumByIdDescription()
   async getById(@Param(ALBUM_PARAM, ParseUUIDPipe) id: string) {
-    const result = await this.albumsService.getAlbumBuId(id);
+    const result = await this.albumsService.getAlbumById(id);
     if (result) return result;
     throw new HttpException(ALBUM_NOT_FOUND, HttpStatus.NOT_FOUND);
   }

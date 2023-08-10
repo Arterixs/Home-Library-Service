@@ -6,7 +6,6 @@ import {
   HttpCode,
   HttpException,
   HttpStatus,
-  NotFoundException,
   Param,
   ParseUUIDPipe,
   Post,
@@ -26,7 +25,6 @@ import {
   PostArtistDescription,
   PutArtistDescription,
 } from './swagger';
-import { Artist } from './entity/artist';
 import { CreateArtistDto } from './dto/create-artist';
 import { UpdateArtistDto } from './dto/update-artist';
 
