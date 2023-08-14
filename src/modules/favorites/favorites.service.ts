@@ -27,18 +27,21 @@ export class FavoritesService {
     const artistIds = await this.artistFavsRepository.find();
     const trackIds = await this.trackFavsRepository.find();
     const albums = await Promise.all(
-      albumIds.map(async (albumIds) =>
-        this.albumService.getAlbumById(albumIds.albumId),
+      albumIds.map(
+        async (albumIds) =>
+          await this.albumService.getAlbumById(albumIds.albumId),
       ),
     );
     const artists = await Promise.all(
-      artistIds.map(async (artistIds) =>
-        this.artistService.getArtistById(artistIds.artistId),
+      artistIds.map(
+        async (artistIds) =>
+          await this.artistService.getArtistById(artistIds.artistId),
       ),
     );
     const tracks = await Promise.all(
-      trackIds.map(async (trackIds) =>
-        this.trackService.getTrackById(trackIds.trackId),
+      trackIds.map(
+        async (trackIds) =>
+          await this.trackService.getTrackById(trackIds.trackId),
       ),
     );
     return { albums, artists, tracks };
@@ -47,7 +50,7 @@ export class FavoritesService {
   async addTrack(id: string) {
     const isTrackExsist = await this.trackService.checkTrackId(id);
     if (!isTrackExsist) return isTrackExsist;
-    const isTracktInFavs = this.trackFavsRepository.exist({
+    const isTracktInFavs = await this.trackFavsRepository.exist({
       where: { trackId: id },
     });
     if (isTracktInFavs) return true;
@@ -62,10 +65,10 @@ export class FavoritesService {
   async addAlbum(id: string) {
     const isAlbumExsist = await this.albumService.checkAlbumId(id);
     if (!isAlbumExsist) return isAlbumExsist;
-    const isAlbumtInFavs = this.albumFavsRepository.exist({
+    const isAlbumInFavs = await this.albumFavsRepository.exist({
       where: { albumId: id },
     });
-    if (isAlbumtInFavs) return true;
+    if (isAlbumInFavs) return true;
     this.albumFavsRepository.save({ albumId: id });
     return true;
   }
@@ -77,7 +80,7 @@ export class FavoritesService {
   async addArtist(id: string) {
     const isArtistExsist = await this.artistService.checkArtistId(id);
     if (!isArtistExsist) return isArtistExsist;
-    const isArtistInFavs = this.artistFavsRepository.exist({
+    const isArtistInFavs = await this.artistFavsRepository.exist({
       where: { artistId: id },
     });
     if (isArtistInFavs) return true;
