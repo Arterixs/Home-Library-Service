@@ -16,9 +16,17 @@ Create `.env` and specify port on which you want to run the server. Example `.en
 
 There are three different modes of operation:
 
-- Run with `npm run start` to launch single server instance
-- Run with `npm run start:dev` to launch single server instance in development mode
-- Run with `npm run start:prod` to launch single server instance in production mode
+Run with `docker compose up` to create images docker and start app with database
+
+### Running migrations
+
+Use `npm run migration:generate` to generate migration
+Use `npm run migration:run` to start migration
+Use `npm run migration:revert` to revert migration
+
+### Running scan for security vulnerabilities
+
+Use `npm run scan` to locate vulnerabilities docker contaiter
 
 ### Running tests
 
