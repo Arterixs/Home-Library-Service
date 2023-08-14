@@ -6,6 +6,7 @@ services:
     build:
       context: .
       target: dev
+      dockerfile: Dockerfile
     restart: always
     volumes:
       - ./src:/app/src
@@ -20,7 +21,9 @@ services:
       - postgres
   postgres:
     container_name: postgres
-    image: postgres:15-alpine
+    build:
+      context: .
+      dockerfile: pg.Dockerfile
     restart: always
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
