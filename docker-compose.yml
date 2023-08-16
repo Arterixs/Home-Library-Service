@@ -29,9 +29,6 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    volumes:
-      - ./pgdata:/var/lib/postgresql/data
-      - logs:/var/lib/postgresql/data/pg_log
     ports:
       - ${POSTGRESS_HOST_PORT}:${POSTGRES_PORT}
     env_file:
@@ -55,5 +52,4 @@ networks:
     driver: bridge
     name: my-network
 volumes:
-  pgdata:
   logs:
