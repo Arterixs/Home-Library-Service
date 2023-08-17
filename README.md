@@ -16,7 +16,7 @@ Create `.env` and specify port on which you want to run the server. Example `.en
 
 There are three different modes of operation:
 
-Run with `docker compose up` to create images docker and start app with database
+Run with `docker compose up` to create images docker and start app with database. And `npm run migration:run` for run migration in db.
 
 ### Running migrations
 
