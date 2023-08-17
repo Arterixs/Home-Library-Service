@@ -25,6 +25,8 @@ services:
       context: .
       dockerfile: pg.Dockerfile
     restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
@@ -52,4 +54,4 @@ networks:
     driver: bridge
     name: my-network
 volumes:
-  logs:
+  pgdata:

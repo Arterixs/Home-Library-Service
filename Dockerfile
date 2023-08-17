@@ -14,4 +14,4 @@ RUN npm ci --only=production && npm cache clean --force
 COPY . .
 COPY --from=development /app/dist ./dist
 
-CMD ["node", "dist/main"]
+CMD [ "node", "dist/main"]
