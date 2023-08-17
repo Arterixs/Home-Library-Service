@@ -6,7 +6,7 @@
 
 ### Installation
 
-- Install with `npm install`
+- Install with `npm ci`
 
 ### Configuration via .env
 
