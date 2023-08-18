@@ -8,9 +8,11 @@ import { DatabaseModule } from '../modules/database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from 'src/modules/auth/auth.module';
 
 @Module({
   imports: [
+    AuthModule,
     UserModule,
     TracksModule,
     FavoritesModule,

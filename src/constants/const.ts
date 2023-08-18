@@ -5,11 +5,15 @@ export const TRACK_PATH = 'track';
 export const ARTIST_PATH = 'artist';
 export const USER_PATH = 'user';
 export const FAVS_PATH = 'favs';
+export const AUTH_PATH = 'auth';
 
 export const ALBUM_PARAM = 'albumId';
 export const TRACK_PARAM = 'trackId';
 export const ARTIST_PARAM = 'artistId';
 export const USER_PARAM = 'userId';
+export const AUTH_SIGNUP = 'signup';
+export const AUTH_LOGIN = 'login';
+export const AUTH_REFRESH = 'refresh';
 
 export const FORMAT_UUID = 4;
 
