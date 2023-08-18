@@ -38,17 +38,35 @@ export class UserService {
     const checkPassword = this.checkPasswordUser(user.password, oldPassword);
     if (!checkPassword) return checkPassword;
     await this.usersRepository.update(id, {
-      password: newPassword,
+      password: this.createHashPassword(newPassword),
     });
     return this.getUserById(id);
   }
 
   checkPasswordUser(currentPassword: string, oldPassword: string) {
-    return currentPassword === oldPassword;
+    return bcrypt.compareSync(oldPassword, currentPassword);
   }
 
   async removeUser(id: string) {
     return await this.usersRepository.delete(id);
+  }
+
+  async getUserByLogin(login: string) {
+    return await this.usersRepository.findOne({
+      where: { login },
+    });
+  }
+
+  async checkUserInDb(user: CreateUserDto) {
+    const userDb = await this.getUserByLogin(user.login);
+    if (!userDb) return { result: false, login: false, password: false };
+
+    const checkPassword = this.checkPasswordUser(
+      userDb.password,
+      user.password,
+    );
+    if (!checkPassword) return { result: false, login: true, password: false };
+    return { result: true, login: true, password: true };
   }
 
   createHashPassword(password: string) {

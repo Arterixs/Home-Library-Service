@@ -2,12 +2,16 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
+  HttpException,
+  HttpStatus,
   Post,
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
   AUTH_LOGIN,
+  AUTH_LOGIN_FORBIDDEN,
+  AUTH_PASSWORD_FORBIDDEN,
   AUTH_PATH,
   AUTH_REFRESH,
   AUTH_SIGNUP,
@@ -15,6 +19,7 @@ import {
 import { CreateUserDto } from '../user/dto/create-dto';
 import { ApiTags } from '@nestjs/swagger';
 import { PostUserDescription } from '../user/swagger';
+import { PostTokenDescription } from './swagger/post-login';
 
 @ApiTags('Auth')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -29,8 +34,18 @@ export class AuthController {
   }
 
   @Post(AUTH_LOGIN)
-  getTokens() {
-    return 'hello';
+  @PostTokenDescription()
+  async getTokens(@Body() user: CreateUserDto) {
+    const result = await this.authService.getTokens(user);
+
+    if (result.result) return true;
+
+    if (!result.login) {
+      throw new HttpException(AUTH_LOGIN_FORBIDDEN, HttpStatus.FORBIDDEN);
+    }
+    if (!result.password) {
+      throw new HttpException(AUTH_PASSWORD_FORBIDDEN, HttpStatus.FORBIDDEN);
+    }
   }
 
   @Post(AUTH_REFRESH)

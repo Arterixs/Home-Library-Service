@@ -9,4 +9,9 @@ export class AuthService {
   async setUser(user: CreateUserDto) {
     return await this.userService.setUser(user);
   }
+
+  async getTokens(user: CreateUserDto) {
+    const checkUser = await this.userService.checkUserInDb(user);
+    if (!checkUser.result) return checkUser;
+  }
 }
