@@ -16,6 +16,7 @@ export const AUTH_LOGIN = 'login';
 export const AUTH_REFRESH = 'refresh';
 
 export const FORMAT_UUID = 4;
+export const saltRounds = 7;
 
 export const TRACK_NOT_FOUND = 'Track is not found';
 export const ARTIST_NOT_FOUND = 'Artist is not found';

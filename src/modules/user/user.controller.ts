@@ -54,7 +54,7 @@ export class UserController {
 
   @Post()
   @PostUserDescription()
-  createUser(@Body() user: CreateUserDto): Promise<void | User> {
+  createUser(@Body() user: CreateUserDto) {
     return this.userService.setUser(user);
   }
 

@@ -1,9 +1,11 @@
+import bcrypt = require('bcryptjs');
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-dto';
 import { User } from './entity/user';
 import { UpdateUserDto } from './dto/update-dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { saltRounds } from 'src/constants/const';
 
 @Injectable()
 export class UserService {
@@ -17,6 +19,8 @@ export class UserService {
   }
 
   async setUser(user: CreateUserDto) {
+    const hash = this.createHashPassword(user.password);
+    user.password = hash;
     const userEentity = this.usersRepository.create(user);
     return await this.usersRepository.save(userEentity);
   }
@@ -45,5 +49,9 @@ export class UserService {
 
   async removeUser(id: string) {
     return await this.usersRepository.delete(id);
+  }
+
+  createHashPassword(password: string) {
+    return bcrypt.hashSync(password, saltRounds);
   }
 }
