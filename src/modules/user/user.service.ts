@@ -58,15 +58,30 @@ export class UserService {
   }
 
   async checkUserInDb(user: CreateUserDto) {
-    const userDb = await this.getUserByLogin(user.login);
-    if (!userDb) return { result: false, login: false, password: false };
+    const userInDb = await this.getUserByLogin(user.login);
+    const objResult = {
+      result: false,
+      login: false,
+      password: false,
+      access: '',
+      refresh: '',
+      userId: '',
+    };
+    if (!userInDb) return objResult;
+    objResult.login = true;
+    objResult.userId = userInDb.id;
 
     const checkPassword = this.checkPasswordUser(
-      userDb.password,
+      userInDb.password,
       user.password,
     );
-    if (!checkPassword) return { result: false, login: true, password: false };
-    return { result: true, login: true, password: true };
+
+    if (!checkPassword) return objResult;
+
+    objResult.result = true;
+    objResult.password = true;
+
+    return objResult;
   }
 
   createHashPassword(password: string) {

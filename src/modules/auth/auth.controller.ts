@@ -38,7 +38,9 @@ export class AuthController {
   async getTokens(@Body() user: CreateUserDto) {
     const result = await this.authService.getTokens(user);
 
-    if (result.result) return true;
+    if (result.result) {
+      return { access: result.access, refresh: result.refresh };
+    }
 
     if (!result.login) {
       throw new HttpException(AUTH_LOGIN_FORBIDDEN, HttpStatus.FORBIDDEN);
