@@ -74,7 +74,7 @@ export class UserService {
   createHashPassword(password: string) {
     return bcrypt.hashSync(
       password,
-      this.configService.get<number>('CRYPT_SALT'),
+      Number(this.configService.get<number>('CRYPT_SALT')),
     );
   }
 }
