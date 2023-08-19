@@ -5,13 +5,14 @@ import { User } from './entity/user';
 import { UpdateUserDto } from './dto/update-dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { saltRounds } from 'src/constants/const';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    private configService: ConfigService,
   ) {}
 
   async getUsers(): Promise<User[]> {
@@ -59,32 +60,21 @@ export class UserService {
 
   async checkUserInDb(user: CreateUserDto) {
     const userInDb = await this.getUserByLogin(user.login);
-    const objResult = {
-      result: false,
-      login: false,
-      password: false,
-      access: '',
-      refresh: '',
-      userId: '',
-    };
-    if (!userInDb) return objResult;
-    objResult.login = true;
-    objResult.userId = userInDb.id;
-
+    if (!userInDb) return null;
     const checkPassword = this.checkPasswordUser(
       userInDb.password,
       user.password,
     );
 
-    if (!checkPassword) return objResult;
+    if (!checkPassword) return null;
 
-    objResult.result = true;
-    objResult.password = true;
-
-    return objResult;
+    return userInDb.id;
   }
 
   createHashPassword(password: string) {
-    return bcrypt.hashSync(password, saltRounds);
+    return bcrypt.hashSync(
+      password,
+      this.configService.get<number>('CRYPT_SALT'),
+    );
   }
 }

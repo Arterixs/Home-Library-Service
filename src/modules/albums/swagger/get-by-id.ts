@@ -1,6 +1,7 @@
 import { applyDecorators } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
@@ -28,5 +29,6 @@ export function GetAlbumByIdDescription() {
     ApiNotFoundResponse({
       description: 'Album was not found',
     }),
+    ApiBearerAuth('JWT-auth'),
   );
 }

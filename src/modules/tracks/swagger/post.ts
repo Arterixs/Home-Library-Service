@@ -1,6 +1,7 @@
 import { applyDecorators } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiOperation,
 } from '@nestjs/swagger';
@@ -19,5 +20,6 @@ export function PostTrackDescription() {
     ApiBadRequestResponse({
       description: 'Bad request. body does not contain required fields',
     }),
+    ApiBearerAuth('JWT-auth'),
   );
 }
