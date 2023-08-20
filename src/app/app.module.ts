@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { UserModule } from '../modules/user/user.module';
 import { TracksModule } from '../modules/tracks/tracks.module';
 import { FavoritesModule } from '../modules/favorites/favorites.module';
@@ -22,6 +22,6 @@ import { AuthModule } from 'src/modules/auth/auth.module';
     ConfigModule.forRoot(),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, Logger],
 })
 export class AppModule {}
