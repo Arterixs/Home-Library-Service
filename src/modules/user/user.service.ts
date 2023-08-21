@@ -1,5 +1,5 @@
 import bcrypt = require('bcryptjs');
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-dto';
 import { User } from './entity/user';
 import { UpdateUserDto } from './dto/update-dto';

@@ -24,14 +24,14 @@ async function bootstrap() {
 }
 bootstrap();
 
-process.on('uncaughtException', () => {
+process.on('uncaughtException', (err) => {
   const logger = new Logger('Global');
-  logger.error('Typeerror error, check ', 'Error');
+  logger.error(`UncaughtException error, ${err}`, 'Error');
   process.exit(1);
 });
 
-process.on('unhandledRejection', () => {
+process.on('unhandledRejection', (err) => {
   const logger = new Logger('Global');
-  logger.error('unhandledRejection error, check ', 'Error');
+  logger.error(`unhandledRejection error, ${err} `, 'Error');
   process.exit(1);
 });
