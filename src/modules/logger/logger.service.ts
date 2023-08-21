@@ -2,8 +2,8 @@ import { Injectable, LoggerService } from '@nestjs/common';
 
 @Injectable()
 export class MyLogger implements LoggerService {
-  getMessage(message: any, context?: string) {
-    return context ? `[${context}] ${message}` : `${message}`;
+  getMessage(message: any, stack?: string, context?: string) {
+    return context ? ` [ ${stack} ] [ ${context} ] ${message}` : `${message}`;
   }
 
   getTime() {
@@ -20,23 +20,35 @@ export class MyLogger implements LoggerService {
     return `[${getDay}/${getMonth}/${getYear}, ${hours}:${minutes}:${seconds}]`;
   }
 
-  log(message: any, context: string) {
-    console.log('\x1b[32m', this.getTime(), this.getMessage(message, context));
+  log(message: any, stack: string, context: string) {
+    console.log(
+      '\x1b[32m',
+      this.getTime(),
+      this.getMessage(message, stack, context),
+    );
   }
 
-  error(message: any, context: string) {
-    console.log('\x1b[31m', this.getMessage(message, context));
+  error(message: any, stack: string, context: string) {
+    console.log(
+      '\x1b[31m',
+      this.getTime(),
+      this.getMessage(message, stack, context),
+    );
   }
 
-  warn(message: any, context: string) {
-    console.log('\x1b[33m', this.getMessage(message, context));
+  warn(message: any, stack: string, context: string) {
+    console.log(
+      '\x1b[33m',
+      this.getTime(),
+      this.getMessage(message, stack, context),
+    );
   }
 
   debug?(message: any, ...optionalParams: any[]) {
-    console.log('\x1b[90m');
+    console.log('\x1b[35m');
   }
 
   verbose?(message: any, ...optionalParams: any[]) {
-    console.log('\x1b[34m');
+    console.log('\x1b[36m');
   }
 }

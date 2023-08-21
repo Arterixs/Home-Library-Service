@@ -37,12 +37,12 @@ import {
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller(USER_PATH)
 export class UserController {
-  private readonly logger = new Logger(UserController.name);
   constructor(private readonly userService: UserService) {}
 
   @Get()
   @GetAllUsersDescription()
   async getUsers(): Promise<User[]> {
+    throw Error();
     return await this.userService.getUsers();
   }
 

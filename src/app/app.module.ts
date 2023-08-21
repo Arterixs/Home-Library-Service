@@ -10,6 +10,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from 'src/modules/auth/auth.module';
 import { LoggerMiddleware } from 'src/common/middleware/logger.middle';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpExceptionFilter } from 'src/common/filter/exception';
 
 @Module({
   imports: [
@@ -23,7 +25,14 @@ import { LoggerMiddleware } from 'src/common/middleware/logger.middle';
     ConfigModule.forRoot(),
   ],
   controllers: [AppController],
-  providers: [AppService, Logger],
+  providers: [
+    AppService,
+    Logger,
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
