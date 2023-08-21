@@ -3,15 +3,13 @@ import { AppModule } from './app/app.module';
 import { ConfigService } from '@nestjs/config';
 import { DEFAULT_PORT } from './constants/const';
 import { ConfigSwagger } from './configs/swagger';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { MyLogger } from './modules/logger/logger.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: new MyLogger(),
-    bufferLogs: true,
   });
-  // app.useLogger(app.get(MyLogger));
   const configService = app.get(ConfigService);
   const port = configService.get('PORT', DEFAULT_PORT);
   app.enableCors({ origin: true });
@@ -25,3 +23,15 @@ async function bootstrap() {
   await app.listen(port);
 }
 bootstrap();
+
+process.on('uncaughtException', () => {
+  const logger = new Logger('Global');
+  logger.error('Typeerror error, check ', 'Error');
+  process.exit(1);
+});
+
+process.on('unhandledRejection', () => {
+  const logger = new Logger('Global');
+  logger.error('unhandledRejection error, check ', 'Error');
+  process.exit(1);
+});

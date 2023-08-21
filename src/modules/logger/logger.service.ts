@@ -44,11 +44,19 @@ export class MyLogger implements LoggerService {
     );
   }
 
-  debug?(message: any, ...optionalParams: any[]) {
-    console.log('\x1b[35m');
+  debug(message: any, stack: string, context: string) {
+    console.log(
+      '\x1b[35m',
+      this.getTime(),
+      this.getMessage(message, stack, context),
+    );
   }
 
-  verbose?(message: any, ...optionalParams: any[]) {
-    console.log('\x1b[36m');
+  verbose(message: any, stack: string, context: string) {
+    console.log(
+      '\x1b[36m',
+      this.getTime(),
+      this.getMessage(message, stack, context),
+    );
   }
 }

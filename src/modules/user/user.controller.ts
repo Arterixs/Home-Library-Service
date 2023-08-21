@@ -42,7 +42,6 @@ export class UserController {
   @Get()
   @GetAllUsersDescription()
   async getUsers(): Promise<User[]> {
-    throw Error();
     return await this.userService.getUsers();
   }
 
