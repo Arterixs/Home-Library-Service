@@ -4,15 +4,15 @@ import {
   Delete,
   Get,
   HttpCode,
+  HttpException,
   HttpStatus,
-  NotFoundException,
   Param,
   ParseUUIDPipe,
   Post,
   Put,
 } from '@nestjs/common';
 import { AlbumsService } from './albums.service';
-import { ALBUM_PARAM, ALBUM_PATH } from 'src/constants/const';
+import { ALBUM_NOT_FOUND, ALBUM_PARAM, ALBUM_PATH } from 'src/constants/const';
 import { ApiTags } from '@nestjs/swagger';
 import {
   DeleteAlbumDescription,
@@ -32,53 +32,43 @@ export class AlbumsController {
 
   @Get()
   @GetAllAlbumsDescription()
-  getAll(): Album[] {
-    return this.albumsService.getAlbums();
+  async getAll(): Promise<Album[]> {
+    return await this.albumsService.getAlbums();
   }
 
   @Get(`:${ALBUM_PARAM}`)
   @GetAlbumByIdDescription()
-  getById(@Param(ALBUM_PARAM, ParseUUIDPipe) id: string) {
-    try {
-      return this.albumsService.getAlbumBuId(id);
-    } catch (err) {
-      if (err.status === HttpStatus.NOT_FOUND) {
-        throw new NotFoundException(err.message);
-      }
-    }
+  async getById(@Param(ALBUM_PARAM, ParseUUIDPipe) id: string) {
+    const result = await this.albumsService.getAlbumById(id);
+    if (result) return result;
+    throw new HttpException(ALBUM_NOT_FOUND, HttpStatus.NOT_FOUND);
   }
 
   @Post()
   @PostAlbumDescription()
-  create(@Body() album: CreateAlbumDto): Album {
-    return this.albumsService.setAlbum(album);
+  async create(@Body() album: CreateAlbumDto): Promise<void | Album> {
+    return await this.albumsService.setAlbum(album);
   }
 
   @Put(`:${ALBUM_PARAM}`)
   @PutAlbumDescription()
-  change(
+  async change(
     @Param(ALBUM_PARAM, ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateAlbumDto,
   ) {
-    try {
-      return this.albumsService.changeAlbum(updateUserDto, id);
-    } catch (err) {
-      if (err.status === HttpStatus.NOT_FOUND) {
-        throw new NotFoundException(err.message);
-      }
+    const result = await this.albumsService.changeAlbum(updateUserDto, id);
+    if (result) {
+      return result;
     }
+    throw new HttpException(ALBUM_NOT_FOUND, HttpStatus.NOT_FOUND);
   }
 
   @Delete(`:${ALBUM_PARAM}`)
   @DeleteAlbumDescription()
   @HttpCode(HttpStatus.NO_CONTENT)
-  delete(@Param(ALBUM_PARAM, ParseUUIDPipe) id: string) {
-    try {
-      return this.albumsService.removeAlbum(id);
-    } catch (err) {
-      if (err.status === HttpStatus.NOT_FOUND) {
-        throw new NotFoundException(err.message);
-      }
-    }
+  async delete(@Param(ALBUM_PARAM, ParseUUIDPipe) id: string) {
+    const result = await this.albumsService.removeAlbum(id);
+    if (result.affected) return result;
+    throw new HttpException(ALBUM_NOT_FOUND, HttpStatus.NOT_FOUND);
   }
 }

@@ -1,5 +1,5 @@
 import { applyDecorators } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { Album } from 'src/modules/albums/entity/album';
 
 export function GetAllAlbumsDescription() {
@@ -12,5 +12,6 @@ export function GetAllAlbumsDescription() {
       description: 'Successful operation',
       type: [Album],
     }),
+    ApiBearerAuth('JWT-auth'),
   );
 }

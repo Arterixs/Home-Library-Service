@@ -1,6 +1,7 @@
 import { applyDecorators } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
@@ -26,7 +27,8 @@ export function PutArtistDescription() {
       description: 'Bad request. artistId is invalid (not uuid)',
     }),
     ApiNotFoundResponse({
-      description: 'Artist was not found.',
+      description: 'Artist is not found.',
     }),
+    ApiBearerAuth('JWT-auth'),
   );
 }

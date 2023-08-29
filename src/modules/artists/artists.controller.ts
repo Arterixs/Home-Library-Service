@@ -4,15 +4,19 @@ import {
   Delete,
   Get,
   HttpCode,
+  HttpException,
   HttpStatus,
-  NotFoundException,
   Param,
   ParseUUIDPipe,
   Post,
   Put,
 } from '@nestjs/common';
 import { ArtistsService } from './artists.service';
-import { ARTIST_PARAM, ARTIST_PATH } from 'src/constants/const';
+import {
+  ARTIST_NOT_FOUND,
+  ARTIST_PARAM,
+  ARTIST_PATH,
+} from 'src/constants/const';
 import { ApiTags } from '@nestjs/swagger';
 import {
   DeleteArtistDescription,
@@ -21,7 +25,6 @@ import {
   PostArtistDescription,
   PutArtistDescription,
 } from './swagger';
-import { Artist } from './entity/artist';
 import { CreateArtistDto } from './dto/create-artist';
 import { UpdateArtistDto } from './dto/update-artist';
 
@@ -32,53 +35,41 @@ export class ArtistsController {
 
   @Get()
   @GetAllArtistDescription()
-  getAll(): Artist[] {
-    return this.artistsService.getArtists();
+  async getAll() {
+    return await this.artistsService.getArtists();
   }
 
   @Get(`:${ARTIST_PARAM}`)
   @GetArtistByIdDescription()
-  getById(@Param(ARTIST_PARAM, ParseUUIDPipe) id: string) {
-    try {
-      return this.artistsService.getArtistBuId(id);
-    } catch (err) {
-      if (err.status === HttpStatus.NOT_FOUND) {
-        throw new NotFoundException(err.message);
-      }
-    }
+  async getById(@Param(ARTIST_PARAM, ParseUUIDPipe) id: string) {
+    const result = await this.artistsService.getArtistById(id);
+    if (result) return result;
+    throw new HttpException(ARTIST_NOT_FOUND, HttpStatus.NOT_FOUND);
   }
 
   @Post()
   @PostArtistDescription()
-  create(@Body() album: CreateArtistDto): Artist {
-    return this.artistsService.setArtist(album);
+  async create(@Body() album: CreateArtistDto) {
+    return await this.artistsService.setArtist(album);
   }
 
   @Put(`:${ARTIST_PARAM}`)
   @PutArtistDescription()
-  change(
+  async change(
     @Param(ARTIST_PARAM, ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateArtistDto,
   ) {
-    try {
-      return this.artistsService.changeArtist(updateUserDto, id);
-    } catch (err) {
-      if (err.status === HttpStatus.NOT_FOUND) {
-        throw new NotFoundException(err.message);
-      }
-    }
+    const result = await this.artistsService.changeArtist(updateUserDto, id);
+    if (result) return result;
+    throw new HttpException(ARTIST_NOT_FOUND, HttpStatus.NOT_FOUND);
   }
 
   @Delete(`:${ARTIST_PARAM}`)
   @DeleteArtistDescription()
   @HttpCode(HttpStatus.NO_CONTENT)
-  delete(@Param(ARTIST_PARAM, ParseUUIDPipe) id: string) {
-    try {
-      return this.artistsService.removeArtist(id);
-    } catch (err) {
-      if (err.status === HttpStatus.NOT_FOUND) {
-        throw new NotFoundException(err.message);
-      }
-    }
+  async delete(@Param(ARTIST_PARAM, ParseUUIDPipe) id: string) {
+    const result = await this.artistsService.removeArtist(id);
+    if (result.affected) return result;
+    throw new HttpException(ARTIST_NOT_FOUND, HttpStatus.NOT_FOUND);
   }
 }

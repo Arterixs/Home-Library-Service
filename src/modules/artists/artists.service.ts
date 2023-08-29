@@ -1,90 +1,47 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { ArtistsDBService } from 'src/modules/artists/db/artists-db.service';
-import { v4 as uuidv4 } from 'uuid';
-import { AlbumsDBService } from 'src/modules/albums/db/albums-db.service';
-import { TracksDBService } from 'src/modules/tracks/db/tracks-db.service';
-import { FavoritesDBService } from 'src/modules/favorites/db/favorites-db.service';
-import { ARTIST_NOT_FOUND } from 'src/constants/const';
+import { Injectable } from '@nestjs/common';
 import { Artist } from './entity/artist';
 import { CreateArtistDto } from './dto/create-artist';
 import { UpdateArtistDto } from './dto/update-artist';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ArtistsService {
   constructor(
-    private readonly dataBase: ArtistsDBService,
-    private readonly dataBaseAlbum: AlbumsDBService,
-    private readonly dataBaseTrack: TracksDBService,
-    private readonly dataBaseFavs: FavoritesDBService,
+    @InjectRepository(Artist)
+    private artistRepository: Repository<Artist>,
   ) {}
 
-  getArtists(): Artist[] {
-    return this.dataBase.getAll();
+  async getArtists() {
+    return await this.artistRepository.find();
   }
 
-  getArtistBuId(id: string) {
-    this.checkArtist(id);
-    return this.takeArtist(id);
+  async getArtistById(id: string) {
+    return await this.artistRepository.findOne({
+      where: { id },
+    });
   }
 
-  setArtist(album: CreateArtistDto) {
-    const fullAlbum = this.createFullArtist(album);
-    this.addAlbumInDB(fullAlbum);
-    return this.takeArtist(fullAlbum.id);
+  async setArtist(album: CreateArtistDto) {
+    const fullAlbum = this.artistRepository.create(album);
+    return await this.artistRepository.save(fullAlbum);
   }
 
-  checkArtist(id: string) {
-    const isArtist = this.dataBase.checkArtist(id);
-    if (!isArtist) {
-      throw new HttpException(ARTIST_NOT_FOUND, HttpStatus.NOT_FOUND);
-    }
+  async checkArtistId(id: string) {
+    return await this.artistRepository.exist({
+      where: { id },
+    });
   }
 
-  takeArtist(id: string) {
-    return this.dataBase.getById(id);
+  async changeArtist(changeAlbum: UpdateArtistDto, id: string) {
+    const resultChekId = await this.checkArtistId(id);
+    if (!resultChekId) return resultChekId;
+    const updateArtist = this.artistRepository.create(changeAlbum);
+    await this.artistRepository.update({ id }, updateArtist);
+    return await this.getArtistById(id);
   }
 
-  addAlbumInDB(album: Artist) {
-    this.dataBase.create(album);
-  }
-
-  createFullArtist(album: CreateArtistDto) {
-    return { ...album, id: uuidv4() };
-  }
-
-  updateArtist(nextAlbum: UpdateArtistDto, prevAlbum: Artist) {
-    return { ...prevAlbum, ...nextAlbum };
-  }
-
-  changeArtist(nextAlbum: UpdateArtistDto, id: string) {
-    this.checkArtist(id);
-    const prevAlbum = this.takeArtist(id);
-    const updateAlbum = this.updateArtist(nextAlbum, prevAlbum);
-    this.addAlbumInDB(updateAlbum);
-    return this.takeArtist(id);
-  }
-
-  deleteArtist(id: string) {
-    this.dataBase.delete(id);
-  }
-
-  removeArtist(id: string) {
-    this.checkArtist(id);
-    this.deleteArtist(id);
-    this.deleteArtistByIdAlbumDB(id);
-    this.deleteArtistByIdTrackDB(id);
-    this.deleteArtistByIdFavsDB(id);
-  }
-
-  deleteArtistByIdAlbumDB(id: string) {
-    this.dataBaseAlbum.deleteArtistById(id);
-  }
-
-  deleteArtistByIdTrackDB(id: string) {
-    this.dataBaseTrack.deleteArtistById(id);
-  }
-
-  deleteArtistByIdFavsDB(id: string) {
-    this.dataBaseFavs.deleteArtist(id);
+  async removeArtist(id: string) {
+    return await this.artistRepository.delete(id);
   }
 }

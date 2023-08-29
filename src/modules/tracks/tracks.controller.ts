@@ -4,15 +4,15 @@ import {
   Delete,
   Get,
   HttpCode,
+  HttpException,
   HttpStatus,
-  NotFoundException,
   Param,
   ParseUUIDPipe,
   Post,
   Put,
 } from '@nestjs/common';
 import { TracksService } from './tracks.service';
-import { TRACK_PARAM, TRACK_PATH } from 'src/constants/const';
+import { TRACK_NOT_FOUND, TRACK_PARAM, TRACK_PATH } from 'src/constants/const';
 import { ApiTags } from '@nestjs/swagger';
 import {
   DeleteTrackDescription,
@@ -21,7 +21,6 @@ import {
   PostTrackDescription,
   PutTrackDescription,
 } from './swagger';
-import { Track } from './entity/track';
 import { CreateTrackDto } from './dto/create-track';
 import { UpdateTrackDto } from './dto/update-track';
 
@@ -32,53 +31,43 @@ export class TracksController {
 
   @Get()
   @GetAllTracksDescription()
-  getAll(): Track[] {
-    return this.tracksService.getTracks();
+  async getAll() {
+    return await this.tracksService.getTracks();
   }
 
   @Get(`:${TRACK_PARAM}`)
   @GetTrackByIdDescription()
-  getById(@Param(TRACK_PARAM, ParseUUIDPipe) id: string) {
-    try {
-      return this.tracksService.getTrackBuId(id);
-    } catch (err) {
-      if (err.status === HttpStatus.NOT_FOUND) {
-        throw new NotFoundException(err.message);
-      }
-    }
+  async getById(@Param(TRACK_PARAM, ParseUUIDPipe) id: string) {
+    const result = await this.tracksService.getTrackById(id);
+    if (result) return result;
+    throw new HttpException(TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
   }
 
   @Post()
   @PostTrackDescription()
-  create(@Body() album: CreateTrackDto): Track {
-    return this.tracksService.setTrack(album);
+  async create(@Body() album: CreateTrackDto) {
+    return await this.tracksService.setTrack(album);
   }
 
   @Put(`:${TRACK_PARAM}`)
   @PutTrackDescription()
-  change(
+  async change(
     @Param(TRACK_PARAM, ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateTrackDto,
   ) {
-    try {
-      return this.tracksService.changeArtist(updateUserDto, id);
-    } catch (err) {
-      if (err.status === HttpStatus.NOT_FOUND) {
-        throw new NotFoundException(err.message);
-      }
+    const result = await this.tracksService.changeTrack(updateUserDto, id);
+    if (result) {
+      return result;
     }
+    throw new HttpException(TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
   }
 
   @Delete(`:${TRACK_PARAM}`)
   @DeleteTrackDescription()
   @HttpCode(HttpStatus.NO_CONTENT)
-  delete(@Param(TRACK_PARAM, ParseUUIDPipe) id: string) {
-    try {
-      return this.tracksService.removeTrack(id);
-    } catch (err) {
-      if (err.status === HttpStatus.NOT_FOUND) {
-        throw new NotFoundException(err.message);
-      }
-    }
+  async delete(@Param(TRACK_PARAM, ParseUUIDPipe) id: string) {
+    const result = await this.tracksService.removeTrack(id);
+    if (result.affected) return result;
+    throw new HttpException(TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
   }
 }

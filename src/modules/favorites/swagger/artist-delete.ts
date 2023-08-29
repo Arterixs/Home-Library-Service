@@ -1,6 +1,7 @@
 import { applyDecorators } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOperation,
@@ -26,5 +27,6 @@ export function DeleteArtistFavsDescription() {
     ApiNotFoundResponse({
       description: 'Artist was not found.',
     }),
+    ApiBearerAuth('JWT-auth'),
   );
 }

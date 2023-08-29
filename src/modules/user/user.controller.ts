@@ -3,11 +3,10 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Delete,
-  ForbiddenException,
   Get,
   HttpCode,
+  HttpException,
   HttpStatus,
-  NotFoundException,
   Param,
   ParseUUIDPipe,
   Post,
@@ -15,7 +14,12 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { USER_PARAM, USER_PATH } from 'src/constants/const';
+import {
+  PASSWORD_FORBIDDEN,
+  USER_NOT_FOUND,
+  USER_PARAM,
+  USER_PATH,
+} from 'src/constants/const';
 import { ApiTags } from '@nestjs/swagger';
 import { User } from './entity/user';
 import { CreateUserDto } from './dto/create-dto';
@@ -36,56 +40,44 @@ export class UserController {
 
   @Get()
   @GetAllUsersDescription()
-  getUsers(): User[] {
-    return this.userService.getUsers();
+  async getUsers(): Promise<User[]> {
+    return await this.userService.getUsers();
   }
 
   @Get(`:${USER_PARAM}`)
   @GetUserByIdDescription()
-  getUser(@Param(USER_PARAM, ParseUUIDPipe) id: string) {
-    try {
-      return this.userService.getUserById(id);
-    } catch (err) {
-      if (err.status === HttpStatus.NOT_FOUND) {
-        throw new NotFoundException(err.message);
-      }
-    }
+  async getUser(@Param(USER_PARAM, ParseUUIDPipe) id: string) {
+    const user = await this.userService.getUserById(id);
+    if (user) return user;
+    throw new HttpException(USER_NOT_FOUND, HttpStatus.NOT_FOUND);
   }
 
   @Post()
   @PostUserDescription()
-  createUser(@Body() user: CreateUserDto): User {
+  createUser(@Body() user: CreateUserDto) {
     return this.userService.setUser(user);
   }
 
   @Put(`:${USER_PARAM}`)
   @PutUserDescription()
-  changeUser(
+  async changeUser(
     @Param(USER_PARAM, ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    try {
-      return this.userService.changeUserById(id, updateUserDto);
-    } catch (err) {
-      if (err.status === HttpStatus.FORBIDDEN) {
-        throw new ForbiddenException(err.message);
-      }
-      if (err.status === HttpStatus.NOT_FOUND) {
-        throw new NotFoundException(err.message);
-      }
+    const result = await this.userService.changeUserById(id, updateUserDto);
+    if (result) return result;
+    if (result === false) {
+      throw new HttpException(PASSWORD_FORBIDDEN, HttpStatus.FORBIDDEN);
     }
+    throw new HttpException(USER_NOT_FOUND, HttpStatus.NOT_FOUND);
   }
 
   @Delete(`:${USER_PARAM}`)
   @DeleteUserDescription()
   @HttpCode(HttpStatus.NO_CONTENT)
-  removeUser(@Param(USER_PARAM, ParseUUIDPipe) id: string) {
-    try {
-      return this.userService.removeUser(id);
-    } catch (err) {
-      if (err.status === HttpStatus.NOT_FOUND) {
-        throw new NotFoundException(err.message);
-      }
-    }
+  async removeUser(@Param(USER_PARAM, ParseUUIDPipe) id: string) {
+    const result = await this.userService.removeUser(id);
+    if (result.affected) return result;
+    throw new HttpException(USER_NOT_FOUND, HttpStatus.NOT_FOUND);
   }
 }

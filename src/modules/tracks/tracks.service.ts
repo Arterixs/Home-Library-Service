@@ -1,76 +1,47 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { TracksDBService } from 'src/modules/tracks/db/tracks-db.service';
-import { v4 as uuidv4 } from 'uuid';
-import { FavoritesDBService } from 'src/modules/favorites/db/favorites-db.service';
-import { TRACK_NOT_FOUND } from 'src/constants/const';
+import { Injectable } from '@nestjs/common';
 import { Track } from './entity/track';
 import { CreateTrackDto } from './dto/create-track';
 import { UpdateTrackDto } from './dto/update-track';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class TracksService {
   constructor(
-    private readonly dataBase: TracksDBService,
-    private readonly dataBaseFavorites: FavoritesDBService,
+    @InjectRepository(Track)
+    private tracksRepository: Repository<Track>,
   ) {}
 
-  getTracks(): Track[] {
-    return this.dataBase.getAll();
+  async getTracks() {
+    return this.tracksRepository.find();
   }
 
-  getTrackBuId(id: string) {
-    this.checkTrack(id);
-    return this.takeTrack(id);
+  async getTrackById(id: string) {
+    return await this.tracksRepository.findOne({
+      where: { id },
+    });
   }
 
-  setTrack(album: CreateTrackDto) {
-    const fullAlbum = this.createFullTrack(album);
-    this.addTrackInDB(fullAlbum);
-    return this.takeTrack(fullAlbum.id);
+  async setTrack(track: CreateTrackDto) {
+    const updateTrack = this.tracksRepository.create(track);
+    return await this.tracksRepository.save(updateTrack);
   }
 
-  checkTrack(id: string) {
-    const isTrack = this.dataBase.checkTracks(id);
-    if (!isTrack) {
-      throw new HttpException(TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
-    }
+  async checkTrackId(id: string) {
+    return await this.tracksRepository.exist({
+      where: { id },
+    });
   }
 
-  takeTrack(id: string) {
-    return this.dataBase.getById(id);
+  async changeTrack(updateTrack: UpdateTrackDto, id: string) {
+    const resultChekId = await this.checkTrackId(id);
+    if (!resultChekId) return resultChekId;
+    const updateAlbum = this.tracksRepository.create(updateTrack);
+    await this.tracksRepository.update({ id }, updateAlbum);
+    return await this.getTrackById(id);
   }
 
-  addTrackInDB(album: Track) {
-    this.dataBase.create(album);
-  }
-
-  createFullTrack(album: CreateTrackDto) {
-    return { ...album, id: uuidv4() };
-  }
-
-  updateTrack(nextAlbum: UpdateTrackDto, prevAlbum: Track) {
-    return { ...prevAlbum, ...nextAlbum };
-  }
-
-  changeArtist(nextAlbum: UpdateTrackDto, id: string) {
-    this.checkTrack(id);
-    const prevAlbum = this.takeTrack(id);
-    const updateAlbum = this.updateTrack(nextAlbum, prevAlbum);
-    this.addTrackInDB(updateAlbum);
-    return this.takeTrack(id);
-  }
-
-  deleteTrack(id: string) {
-    this.dataBase.delete(id);
-  }
-
-  deleteTrackFavs(id: string) {
-    this.dataBaseFavorites.deleteTrack(id);
-  }
-
-  removeTrack(id: string) {
-    this.checkTrack(id);
-    this.deleteTrack(id);
-    this.deleteTrackFavs(id);
+  async removeTrack(id: string) {
+    return await this.tracksRepository.delete(id);
   }
 }

@@ -1,6 +1,10 @@
 import { applyDecorators } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
-import { Favorites } from 'src/modules/favorites/entity/favorites';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOperation,
+} from '@nestjs/swagger';
+import { Favorites } from './favorites';
 
 export function GetAllFavsDescription() {
   return applyDecorators(
@@ -12,5 +16,6 @@ export function GetAllFavsDescription() {
       description: 'Successful operation',
       type: Favorites,
     }),
+    ApiBearerAuth('JWT-auth'),
   );
 }

@@ -1,6 +1,7 @@
 import { applyDecorators } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiOperation,
   ApiParam,
@@ -26,5 +27,6 @@ export function PostArtistFavsDescription() {
     ApiUnprocessableEntityResponse({
       description: "Artist with id doesn't exist",
     }),
+    ApiBearerAuth('JWT-auth'),
   );
 }
