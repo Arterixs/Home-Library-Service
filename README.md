@@ -275,7 +275,7 @@ For more information about **OpenAPI/Swagger** please visit `https://swagger.io/
   - Server should answer with `status code` **400** and corresponding message if `artistId` is invalid (not `uuid`)
   - Server should answer with `status code` **404** and corresponding message if corresponding artist is not favorite
 
-## DTO
+## Data Transfer Object (DTO)
 
 ### Auth
 
