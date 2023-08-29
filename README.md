@@ -35,6 +35,13 @@
     </li>
     <li>
       <a href="#data-transfer-object-dto">Data Transfer Object</a>
+       <ul>
+        <li><a href="#auth-1">Auth</a></li>
+        <li><a href="#user-1">User</a></li>
+        <li><a href="#artist-1">Artist</a></li>
+        <li><a href="#track-1">Track</a></li>
+        <li><a href="#album-1">Album</a></li>
+      </ul>
     </li>
   </ol>
 </details>
