@@ -25,6 +25,7 @@
     <li>
       <a href="#api">API</a>
       <ul>
+        <li><a href="#auth">Auth</a></li>
         <li><a href="#user">User</a></li>
         <li><a href="#track">Track</a></li>
         <li><a href="#artist">Artist</a></li>
@@ -33,12 +34,7 @@
       </ul>
     </li>
     <li>
-      <a href="#dto">DTO</a>
-      <ul>
-        <li><a href="#user">User</a></li>
-        <li><a href="#track">Track</a></li>
-        <li><a href="#album">Album</a></li>
-      </ul>
+      <a href="#data-trahsfer-object">Data Transfer Object</a>
     </li>
   </ol>
 </details>
@@ -47,7 +43,7 @@
 
 [RS School NodeJS 2023 Q2 - Final Task](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/rest-service/assignment.md)
 
-This project is a home library service that stores users, as well as their favorite tracks, track albums and artists.
+This project is a home library service that stores users, as well as their favorite tracks, track, albums and artists.
 
 ### Built With
 
@@ -66,7 +62,7 @@ This section lists all the main tools with which this project was built.
 
 This section describes the functionality of the application.
 
-- [x] CRUD with router paths `/user`, `/track`, `/artist`, `/album`, `/favs`, `/doc`
+- [x] CRUD REST API with router paths `/user`, `/track`, `/artist`, `/album`, `/favs`, `/doc`, `/auth`
 - [x] Documentation API with OpenAPI/Swagger
 - [x] Connecting the application using TopeORM to the PostgresQL database
 - [x] Create running migration with TypeORM
@@ -111,6 +107,26 @@ in your browser **OpenAPI** documentation by typing `http://localhost:4000/docs/
 For more information about **OpenAPI/Swagger** please visit `https://swagger.io/.`
 
 ## API
+
+### Auth
+
+- **POST** `auth/signup` - create new user
+  
+  - Server answer with `status code` **200** and corresponding message if dto is valid
+  - Server answer with `status code` **400** and corresponding message if dto is invalid (no `login` or `password`, or they are not a `strings`)
+    
+- **POST** `auth/login` - get access token and refresh token
+  
+  - Server answer with `status code` **200** and corresponding message if dto is valid
+  - Server answer with `status code` **400** and corresponding message if dto is invalid (no `login` or `password`, or they are not a `strings`)
+  - Server answer with `status code` **403** and corresponding message if authentication failed (no user with such `login`, `password` doesn't match actual one, etc.)
+    
+- **POST** `auth/refresh` - get new pair of access token and refresh token
+
+  - Server answer with `status code` **200** and corresponding message if dto is valid
+  - Server answer with `status code` **401** and corresponding message if dto is invalid (no refreshToken in body)
+  - Server answer with `status code` **403** and corresponding message if authentication failed (refresh token is invalid or expired)
+
 
 ### User
 
@@ -260,6 +276,17 @@ For more information about **OpenAPI/Swagger** please visit `https://swagger.io/
   - Server should answer with `status code` **404** and corresponding message if corresponding artist is not favorite
 
 ## DTO
+
+### Auth
+
+Body of **POST** path `auth/signup` request **must be** in the following format:
+
+- `login` — user's login (`string`, **required**)
+- `password` — user's password (`number`, **required**)
+
+Body of **POST** path `auth/refresh` request **must be** in the following format:
+
+- `refreshToken` — refresh token (`tokenJWT`, **required**)
 
 ### User
 
