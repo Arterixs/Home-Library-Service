@@ -34,7 +34,7 @@
       </ul>
     </li>
     <li>
-      <a href="#dto">Data Transfer Object</a>
+      <a href="#data-transfer-object-dto">Data Transfer Object</a>
     </li>
   </ol>
 </details>
