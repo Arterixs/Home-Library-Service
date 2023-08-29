@@ -1,6 +1,7 @@
 import { applyDecorators } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -32,5 +33,6 @@ export function PutUserDescription() {
     ApiNotFoundResponse({
       description: 'User not found',
     }),
+    ApiBearerAuth('JWT-auth'),
   );
 }

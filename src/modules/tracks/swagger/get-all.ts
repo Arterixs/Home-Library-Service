@@ -1,5 +1,5 @@
 import { applyDecorators } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { Track } from 'src/modules/tracks/entity/track';
 
 export function GetAllTracksDescription() {
@@ -12,5 +12,6 @@ export function GetAllTracksDescription() {
       description: 'Successful operation',
       type: [Track],
     }),
+    ApiBearerAuth('JWT-auth'),
   );
 }

@@ -16,7 +16,7 @@ Create `.env` and specify port on which you want to run the server. Example `.en
 
 There are three different modes of operation:
 
-Run with `docker compose up` to create images docker and start app with database. And `npm run migration:run` for run migration in db.
+Run with `docker compose up` to create images docker and start app with database, then `npm run migration:run` for run migration in db.
 
 ### Running migrations
 
@@ -30,7 +30,7 @@ Use `npm run scan` to locate vulnerabilities docker contaiter
 
 ### Running tests
 
-Use `npm run test` to run provided e2e tests
+Use `npm run test:auth` to run provided e2e tests
 
 ### OpenAPI/Swagger
 

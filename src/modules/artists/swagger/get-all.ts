@@ -1,5 +1,5 @@
 import { applyDecorators } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { Artist } from 'src/modules/artists/entity/artist';
 
 export function GetAllArtistDescription() {
@@ -12,5 +12,6 @@ export function GetAllArtistDescription() {
       description: 'Successful operation',
       type: [Artist],
     }),
+    ApiBearerAuth('JWT-auth'),
   );
 }
