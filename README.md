@@ -1,8 +1,80 @@
-# Home Library Service
+<h1 align="center">Home Library Service</h1>
+
+<details open="open">
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+        <li><a href="#features">Features</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#installation">Installation</a></li>
+        <li><a href="#configuration">Configuration via .env</a></li>
+        <li><a href="#starting">Starting application</a></li>
+        <li><a href="#migrations">Migrations</a></li>
+        <li><a href="#running-scan">Running scan for security vulnerabilities</a></li>
+        <li><a href="#running-tests">Running tests</a></li>
+        <li><a href="#openapi">OpenAPI/Swagger</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#api">API</a>
+      <ul>
+        <li><a href="#user">User</a></li>
+        <li><a href="#track">Track</a></li>
+        <li><a href="#artist">Artist</a></li>
+        <li><a href="#album">Album</a></li>
+        <li><a href="#favs">Favs</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#dto">DTO</a>
+      <ul>
+        <li><a href="#user">User</a></li>
+        <li><a href="#track">Track</a></li>
+        <li><a href="#album">Album</a></li>
+      </ul>
+    </li>
+  </ol>
+</details>
+
+## About the project
 
 [RS School NodeJS 2023 Q2 - Final Task](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/rest-service/assignment.md)
 
-## Usage
+This project is a home library service that stores users, as well as their favorite tracks, track albums and artists.
+
+### Built With
+
+This section lists all the main tools with which this project was built.
+
+- Node.js
+- Nest
+- TypeScript
+- Typeorm
+- PostgresQL
+- Docker
+- Swagger
+- Bcrypt.js
+
+### Features
+
+This section describes the functionality of the application.
+
+- [x] CRUD with router paths `/user`, `/track`, `/artist`, `/album`, `/favs`, `/doc`
+- [x] Documentation API with OpenAPI/Swagger
+- [x] Connecting the application using TopeORM to the PostgresQL database
+- [x] Create running migration with TypeORM
+- [x] Containerizing an application with docker
+- [x] Create custom logger in application
+- [x] Create authentication and authorization in application
+
+## Getting Started
 
 ### Installation
 
@@ -18,7 +90,7 @@ There are three different modes of operation:
 
 Run with `docker compose up` to create images docker and start app with database, then `npm run migration:run` for run migration in db.
 
-### Running migrations
+### Migrations
 
 Use `npm run migration:generate` to generate migration
 Use `npm run migration:run` to start migration
@@ -186,6 +258,8 @@ For more information about **OpenAPI/Swagger** please visit `https://swagger.io/
   - Server should answer with `status code` **204** if the artist was in favorites and now it's deleted id is found and deleted
   - Server should answer with `status code` **400** and corresponding message if `artistId` is invalid (not `uuid`)
   - Server should answer with `status code` **404** and corresponding message if corresponding artist is not favorite
+
+## DTO
 
 ### User
 
