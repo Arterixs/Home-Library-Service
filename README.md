@@ -48,8 +48,6 @@
 
 ## About the project
 
-[RS School NodeJS 2023 Q2 - Final Task](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/rest-service/assignment.md)
-
 This project is a home library service that stores users, as well as their favorite tracks, track, albums and artists.
 
 ### Built With
